@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import Header from "@/components/header/header";
 import Banner from "@/components/header/banner";
-import Layout from "@/components/layout";
+import Layout from "@/components/account/layout";
 import WhoWeSupport from "@/components/WhoWeSupport";
 import CTA from "@/components/CTA";
 import FeaturedProjects from "@/components/FeaturedProjects";
@@ -10,30 +10,20 @@ import FAQ from "@/components/FAQ";
 import Clients from "@/components/Clients";
 import Team from "@/components/Team";
 import Categories from "@/components/categories";
-import Blogs from "@/components/blog";
-import Testimonials from "@/components/Testimonials";
-import PopularProjects from "@/components/PopularProjects";
-import Features from "@/components/Features";
+import ContactUsBanner from "@/components/header/ContactUsBanner";
+import Sidebar from "@/components/Sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home() {
+export default function Account() {
   return (
     <Layout
       className={` ${inter.className}`}
-    >
-      <Banner/>
-      <FeaturedProjects/>
-      <PopularProjects/>
-      <Categories/>
-      <WhoWeSupport/>
-      <Team/>
-      <Features/>
-      <Testimonials/>
-      <FAQ/>
-      <Blogs/>
-      <Clients/>
-      <CTA/>
+      >
+     <div className="className='sm:ml-[81px] xl:ml-[340px] w-[100%] md:w-[75%] lg:w-[80%] xl:w-[80%] h-screen min-h-screen  text-[#16181C] overflow-y-auto no-scrollbar'">
+        <span className="text-xl font-bold">This is user Dashboard</span>
+        <CTA/>
+      </div>
     </Layout>
   );
 }
