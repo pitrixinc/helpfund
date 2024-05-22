@@ -20,7 +20,7 @@ export default function Account() {
     <Layout
       className={` ${inter.className}`}
       >
-     <div className="className='sm:ml-[81px] xl:ml-[340px] w-[100%] md:w-[75%] lg:w-[80%] xl:w-[80%] h-screen min-h-screen  text-[#16181C] overflow-y-auto no-scrollbar'">
+     <div className="className='sm:ml-[81px] xl:ml-[340px] w-[100%] md:w-[70%] lg:w-[75%] xl:w-[80%] h-screen min-h-screen  text-[#16181C] overflow-y-auto no-scrollbar'">
         <span className="text-xl font-bold">This is user Dashboard</span>
         <CTA/>
       </div>
