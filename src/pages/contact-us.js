@@ -10,25 +10,17 @@ import FAQ from "@/components/FAQ";
 import Clients from "@/components/Clients";
 import Team from "@/components/Team";
 import Categories from "@/components/categories";
-import Blogs from "@/components/blog";
-import Testimonials from "@/components/Testimonials";
+import ContactUsBanner from "@/components/header/ContactUsBanner";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home() {
+export default function Contactus() {
   return (
     <Layout
       className={` ${inter.className}`}
     >
-      <Banner/>
-      <FeaturedProjects/>
-      <Categories/>
-      <WhoWeSupport/>
-      <Team/>
-      <Testimonials/>
-      <FAQ/>
-      <Blogs/>
-      <Clients/>
+      <ContactUsBanner/>
+    
       <CTA/>
     </Layout>
   );
