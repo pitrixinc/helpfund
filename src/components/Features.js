@@ -39,7 +39,7 @@ const Features = () => {
               Simple and affordable
             </h3>
             <p class="mt-1 text-gray-600 dark:text-neutral-400">
-              From boarding passes to movie tickets, there's pretty much nothing you can't store with Preline.
+              From boarding passes to movie tickets, there&apos;s pretty much nothing you can&apos;t store with Preline.
             </p>
           </div>
         </div>
