@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link'
 
 const Header = () => {
   return (
@@ -6,7 +7,7 @@ const Header = () => {
   <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
     <div className="flex h-16 items-center justify-between">
       <div className="md:flex md:items-center md:gap-12">
-        <a className=" text-teal-600 flex" href="#">
+        <Link className=" text-teal-600 flex" href="#">
           <span className="sr-only">Home</span>
           <svg className="h-8" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -14,37 +15,37 @@ const Header = () => {
               fill="currentColor"
             />
           </svg> <span className='ml-1 p-1 font-semibold'>HelpFund</span>
-        </a>
+        </Link>
       </div>
 
       <div className="hidden md:block">
         <nav aria-label="Global">
           <ul className="flex items-center gap-6 text-sm">
             <li>
-              <a className="text-gray-500 transition hover:text-gray-500/75" href="/"> About </a>
+              <Link className="text-gray-500 transition hover:text-gray-500/75" href="/"> About </Link>
             </li>
 
             <li>
-              <a className="text-gray-500 transition hover:text-gray-500/75" href="#"> Careers </a>
+              <Link className="text-gray-500 transition hover:text-gray-500/75" href="#"> Careers </Link>
             </li>
 
             <li>
-              <a className="text-gray-500 transition hover:text-gray-500/75" href="#"> History </a>
+              <Link className="text-gray-500 transition hover:text-gray-500/75" href="#"> History </Link>
             </li>
 
             <li>
-              <a className="text-gray-500 transition hover:text-gray-500/75" href="#"> Services </a>
+              <Link className="text-gray-500 transition hover:text-gray-500/75" href="#"> Services </Link>
             </li>
 
             <li>
-              <a className="text-gray-500 transition hover:text-gray-500/75" href="#"> Projects </a>
+              <Link className="text-gray-500 transition hover:text-gray-500/75" href="#"> Projects </Link>
             </li>
 
             <li>
-              <a className="text-gray-500 transition hover:text-gray-500/75" href="#"> Blog </a>
+              <Link className="text-gray-500 transition hover:text-gray-500/75" href="#"> Blog </Link>
             </li>
             <li>
-              <a className="text-gray-500 transition hover:text-gray-500/75" href="/contact-us"> Contact Us </a>
+              <Link className="text-gray-500 transition hover:text-gray-500/75" href="/contact-us"> Contact Us </Link>
             </li>
           </ul>
         </nav>
