@@ -274,7 +274,7 @@ const AccountSignin = () => {
               fontSize: '16px',
             }}
           >
-            Don't have an account? Sign up as <Link href="/creator-signup" className="text-rose-600">Creator</Link> or <Link href="/donator-signup" className="text-rose-600">Donor</Link>.
+            Don&apos;t have an account? Sign up as <Link href="/creator-signup" className="text-rose-600">Creator</Link> or <Link href="/donator-signup" className="text-rose-600">Donor</Link>.
           </p>
         
           </form>
