@@ -187,7 +187,7 @@ const Footer = () => {
         </ul>
 
         <p className="mt-8 text-xs text-gray-500 sm:mt-0">
-          &copy; 2022. Company Name. All rights reserved.
+          &copy; {new Date().getFullYear()}. HelpFund. All rights reserved.
         </p>
       </div>
     </div>

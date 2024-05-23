@@ -4,7 +4,8 @@ import Sidebar from '../Sidebar';
 export default function Layout({ children }) {
   
   return (
-    <React.Fragment className="flex h-screen">
+    <React.Fragment>
+      <div className="flex h-screen">
         <div className='w-[20%]'>
         <Sidebar />
         </div>
@@ -15,6 +16,7 @@ export default function Layout({ children }) {
       >
         {children}
       </main>
+     </div>
     </React.Fragment>
   );
 }

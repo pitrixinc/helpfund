@@ -1,13 +1,20 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 const Header = () => {
+  const [showSidebar, setShowSidebar] = useState(false);
+
+    const toggleSidebar = () => {
+      setShowSidebar(!showSidebar);
+    };
+
   return (
     <header className="bg-white">
   <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
     <div className="flex h-16 items-center justify-between">
       <div className="md:flex md:items-center md:gap-12">
-        <Link className=" text-teal-600 flex" href="#">
+        <Link className=" text-rose-600 flex" href="#">
           <span className="sr-only">Home</span>
           <svg className="h-8" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -53,25 +60,25 @@ const Header = () => {
 
       <div className="flex items-center gap-4">
         <div className="sm:flex sm:gap-4">
-          <a
-            className="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white shadow"
-            href="#"
+          <Link
+            className="rounded-md bg-rose-600 px-5 py-2.5 text-sm font-medium text-white shadow"
+            href="/donator-signup"
           >
-            Login
-          </a>
+            Donate
+          </Link>
 
           <div className="hidden sm:flex">
-            <a
-              className="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600"
-              href="#"
+            <Link
+              className="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-rose-600"
+              href="/creator-signup"
             >
-              Register
-            </a>
+              Get Funded
+            </Link>
           </div>
         </div>
 
         <div className="block md:hidden">
-          <button className="rounded bg-gray-100 p-2 text-gray-600 transition hover:text-gray-600/75">
+          <button className="rounded bg-gray-100 p-2 text-gray-600 transition hover:text-gray-600/75" onClick={toggleSidebar}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -87,6 +94,59 @@ const Header = () => {
       </div>
     </div>
   </div>
+  
+        {/* Sidebar */}
+        {showSidebar && (
+        <div 
+          className="xl:hidden fixed top-0 z-10 left-0 w-[90%] h-screen bg-gray-100 p-4 transition-transform transform duration-300 ease-in-out"
+          
+        >
+          <div
+            className=" flex justify-end cursor-pointer"
+            onClick={toggleSidebar}
+          >  <span className='text-[22px] cursor-pointer '>X</span>
+          </div>
+          <div className='mt-10'>
+           {/* Sidebar content goes here */} 
+           <div className='flex items-center gap-2 font-semibold text-[18px] cursor-pointer mx-2'>
+            {/* <AiOutlineUser /> */} <span>About</span>
+           </div>
+           <div className='flex items-center gap-2 font-semibold text-[18px] cursor-pointer mt-8 mx-2'>
+            {/* <HiOutlineUserGroup /> */} <span>Groups</span>
+           </div>
+           <div className='flex items-center gap-2 font-semibold text-[18px] cursor-pointer mt-8 mx-2'>
+            {/* <BiPoll /> */} <span>Polls</span>
+           </div>
+           <div className='flex items-center gap-2 font-semibold text-[18px] cursor-pointer mt-8 mx-2'>
+             {/* <MdOutlineEventNote /> */} <span>Events</span>
+          </div>
+           <div className='flex items-center gap-2 font-semibold text-[18px] cursor-pointer mt-8 mx-2'>
+            {/* <RiHashtag />*/} <span>Hashtags</span>
+           </div>
+
+          
+        </div>
+
+        
+
+        <div
+                className="text-black bottom-0 w-full flex items-center mt-[70px] py-4 px-1 shadow-md bg-white rounded-[20px]"
+               
+            >
+               
+                <div className="inline leading-5 gap-1">
+                <Link
+                  className="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-rose-600"
+                  href="/creator-signup"
+                >
+                  Get Funded
+                </Link>
+                </div>
+               {/* <BsThreeDots className="h-5 inline ml-10" /> */}
+            </div>
+        </div>
+
+      )}
 </header>
   )
 }
