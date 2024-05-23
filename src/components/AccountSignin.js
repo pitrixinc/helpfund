@@ -73,7 +73,7 @@ const AccountSignin = () => {
             } else if (userData.isMiniAdmin) {
               returnUrl = `/dashboard/${user.uid}/dashboard`;
             } else if (userData.isCreator || userData.isDonor) {
-              returnUrl = `/account/${user.uid}`;
+              returnUrl = `/account/${user.uid}/dashboard`;
             } else {
               returnUrl = '/';
             }
