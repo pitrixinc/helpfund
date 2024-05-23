@@ -115,13 +115,14 @@ const AccountSignin = () => {
     }, [images.length]);
 
   return (
+    <div className={`md:mx-5`}>
     <div
       style={{
         display: 'flex',
         height: '100vh',
       }}
     >
-      <div
+      <div className='hidden md:flex lg:flex xl:flex'
         style={{
           display: ['none', null, 'flex'],
           flex: 1,
@@ -186,10 +187,10 @@ const AccountSignin = () => {
               mb: ['15px', null, null, null, '20px'],
               width: ['100%'],
               maxWidth: ['100%', null, null, '90%', '100%', '540px'],
-              fontSize: [3, null, null, '36px', null, '25px', 6],
             }}
+            className="text-xl"
           >
-            Welcome Back !
+          Welcome Back!
           </h3>
           <p
             as="p"
@@ -281,6 +282,7 @@ const AccountSignin = () => {
           )}
         </div>
       </div>
+    </div>
     </div>
   )
 }

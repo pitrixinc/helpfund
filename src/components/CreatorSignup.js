@@ -235,7 +235,7 @@ const SignupCreator = () => {
             }}
             className="text-xl"
           >
-            Create An Account
+             Create A Fund Raiser Account
           </h3>
           <p
             as="p"
