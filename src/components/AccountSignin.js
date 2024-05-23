@@ -270,12 +270,12 @@ const AccountSignin = () => {
      <p
             style={{
               marginTop: '10px',
-              color: '#007bff',
               textDecoration: 'none',
               fontSize: '16px',
             }}
+            className="text-rose-600"
           >
-            Sign up as <Link href="/creator-signup" className="text-rose-600">Creator</Link> or <Link href="/donator-signup" className="text-rose-600">Donor</Link>.
+            Sign up as <Link href="/creator-signup" className="font-semibold">Creator</Link> or <Link href="/donator-signup" className="font-semibold">Donor</Link>
           </p>
         
           </form>
