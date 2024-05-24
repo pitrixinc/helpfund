@@ -11,7 +11,7 @@ import Clients from "@/components/Clients";
 import Team from "@/components/Team";
 import Categories from "@/components/categories";
 import ContactUsBanner from "@/components/header/ContactUsBanner";
-import Sidebar from "@/components/Sidebar";
+import Sidebar from "@/components/account/Sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 

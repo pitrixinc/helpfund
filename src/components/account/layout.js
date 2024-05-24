@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';;
-import Sidebar from '../Sidebar';
+import Sidebar from './Sidebar';
 
 export default function Layout({ children }) {
   
