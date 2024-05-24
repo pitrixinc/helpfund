@@ -145,7 +145,8 @@ const Create = () => {
             projectId: docRef.id,  // Store the project ID
             addedBy: userDetails.uid,
             addedByImage: userDetails.photoURL,
-            displayName: userDetails.displayName
+            displayName: userDetails.displayName,
+            createdAt: new Date().toISOString()
           };
       
           if (selectedFile) {
