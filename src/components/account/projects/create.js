@@ -139,6 +139,7 @@ const Create = () => {
             location: location,
             socialLinks: socialLinks,
             contactInfo: contactInfo,
+            isApproved: false,
           });
       
           const projectData = {

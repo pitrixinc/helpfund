@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase.config';
+import DefaultProjectDisplay from './DefaultProjectDisplay';
 
 const ProjectDisplay = ({ filters, sortOption }) => {
   const [projects, setProjects] = useState([]);
@@ -10,8 +11,12 @@ const ProjectDisplay = ({ filters, sortOption }) => {
     const fetchProjects = async () => {
       const querySnapshot = await getDocs(collection(db, 'projects'));
       const projectsList = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setProjects(projectsList);
-      applyFiltersAndSorting(projectsList);
+
+      // Filter approved projects
+      const approvedProjects = projectsList.filter(project => project.isApproved);
+
+      setProjects(approvedProjects);
+      applyFiltersAndSorting(approvedProjects);
     };
 
     fetchProjects();
@@ -33,7 +38,7 @@ const ProjectDisplay = ({ filters, sortOption }) => {
       filtered = filtered.filter(project => project.goal >= minGoal && project.goal <= maxGoal);
     }
     if (filters.searchTerm) {
-      filtered = filtered.filter(project => 
+      filtered = filtered.filter(project =>
         project.title.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
         project.description.toLowerCase().includes(filters.searchTerm.toLowerCase())
       );
@@ -71,6 +76,10 @@ const ProjectDisplay = ({ filters, sortOption }) => {
     setFilteredProjects(filtered);
   };
 
+  // Check if any filters or sorting options have been applied
+  const isFilteredOrSorted = filters.category || filters.goalRange || filters.searchTerm || sortOption;
+
+
   return (
     <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
 
@@ -89,8 +98,10 @@ const ProjectDisplay = ({ filters, sortOption }) => {
         </div>
       ))}
       */}
-
-{filteredProjects.map(project => (
+{!isFilteredOrSorted === null ? (
+        <DefaultProjectDisplay />
+      ) : (
+ filteredProjects.map(project => (
 <div key={project.id} class="group flex flex-col h-full bg-white border border-gray-200 shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
           <div class="h-52 flex flex-col justify-center items-center bg-blue-600 rounded-t-xl">
             <img src={project.image} alt="project image" className='w-[56] h-[56]' />
@@ -115,7 +126,7 @@ const ProjectDisplay = ({ filters, sortOption }) => {
             </a>
           </div>
         </div>
-        ))}
+        )))} 
     </div>
     </div>
   );
