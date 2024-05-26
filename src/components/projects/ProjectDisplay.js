@@ -2,10 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase.config';
 import DefaultProjectDisplay from './DefaultProjectDisplay';
+import { useRouter } from 'next/router';
 
 const ProjectDisplay = ({ filters, sortOption }) => {
+  const router = useRouter()
   const [projects, setProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(9);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -15,8 +19,11 @@ const ProjectDisplay = ({ filters, sortOption }) => {
       // Filter approved projects
       const approvedProjects = projectsList.filter(project => project.isApproved);
 
-      setProjects(approvedProjects);
-      applyFiltersAndSorting(approvedProjects);
+      // Randomize the approved projects
+      const randomizedProjects = shuffleArray(approvedProjects);
+
+      setProjects(randomizedProjects);
+      applyFiltersAndSorting(randomizedProjects);
     };
 
     fetchProjects();
@@ -24,7 +31,15 @@ const ProjectDisplay = ({ filters, sortOption }) => {
 
   useEffect(() => {
     applyFiltersAndSorting(projects);
-  }, [filters, sortOption, projects]);
+  }, [filters, sortOption, projects, currentPage]);
+
+  const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
 
   const applyFiltersAndSorting = (projectsList) => {
     let filtered = projectsList;
@@ -38,7 +53,7 @@ const ProjectDisplay = ({ filters, sortOption }) => {
       filtered = filtered.filter(project => project.goal >= minGoal && project.goal <= maxGoal);
     }
     if (filters.searchTerm) {
-      filtered = filtered.filter(project =>
+      filtered = filtered.filter(project => 
         project.title.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
         project.description.toLowerCase().includes(filters.searchTerm.toLowerCase())
       );
@@ -76,19 +91,45 @@ const ProjectDisplay = ({ filters, sortOption }) => {
     setFilteredProjects(filtered);
   };
 
-  // Check if any filters or sorting options have been applied
-  const isFilteredOrSorted = filters.category || filters.goalRange || filters.searchTerm || sortOption;
+  const handleNextPage = () => {
+    setCurrentPage(prevPage => prevPage + 1);
+  };
+
+  const handlePreviousPage = () => {
+    setCurrentPage(prevPage => prevPage - 1);
+  };
+
+  // Pagination logic
+  const indexOfLastProject = currentPage * itemsPerPage;
+  const indexOfFirstProject = indexOfLastProject - itemsPerPage;
+  const currentProjects = filteredProjects.slice(indexOfFirstProject, indexOfLastProject);
+
+  const truncateString = (str, maxLength) => {
+    if (str.length > maxLength) {
+      return str.slice(0, maxLength) + '...';
+    }
+    return str;
+  };
 
 
   return (
-    <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
+    <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-1 mx-auto">
 
-        <div class="max-w-2xl mx-auto text-center mb-10 lg:mb-14">
-            <h2 class="text-2xl font-bold md:text-4xl md:leading-tight dark:text-white">Featured Projects</h2>
-            <p class="mt-1 text-gray-600 dark:text-neutral-400">Creative people</p>
+<div class="relative mt-0 mb-5 h-40 rounded-t-xl bg-[url('https://preline.co/assets/svg/examples/abstract-bg-1.svg')] bg-no-repeat bg-cover bg-center">
+        {/*
+        <div class="absolute top-0 end-0 p-4">
+          <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800">
+            <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+            Upload header
+          </button>
         </div>
+  */}
+            <h2 class="text-2xl p-4 font-bold md:text-4xl md:leading-tight dark:text-white">Discover Projects</h2>
+            <p class="mt-1 p-4 text-gray-600 dark:text-neutral-400">Creative people</p>
        
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      </div>
+       
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6">
 {/* 
       {filteredProjects.map(project => (
         <div key={project.id} className="bg-white p-4 rounded shadow">
@@ -98,36 +139,51 @@ const ProjectDisplay = ({ filters, sortOption }) => {
         </div>
       ))}
       */}
-{!isFilteredOrSorted === null ? (
-        <DefaultProjectDisplay />
-      ) : (
- filteredProjects.map(project => (
-<div key={project.id} class="group flex flex-col h-full bg-white border border-gray-200 shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
-          <div class="h-52 flex flex-col justify-center items-center bg-blue-600 rounded-t-xl">
-            <img src={project.image} alt="project image" className='w-[56] h-[56]' />
+ {currentProjects.map(project => (
+<div key={project.id} onClick={() => router.push(`/projects/${project.id}`)} class="cursor-pointer group flex flex-col h-full bg-white border border-gray-200 shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
+          <div class="h-48 flex flex-col justify-center items-center bg-[url('https://preline.co/assets/svg/examples/abstract-bg-1.svg')] bg-no-repeat bg-cover bg-center rounded-t-xl">
+            <img src={project.image} alt="project image" className='w-full h-48 rounded-md' />
           </div>
           <div class="p-4 md:p-6">
-            <span class="block mb-1 text-xs font-semibold uppercase text-blue-600 dark:text-blue-500">
-            {project.displayName}
+            <span class="block mb-1 text-[9px] md:text-xs lg:text-xs font-semibold uppercase text-blue-600 dark:text-blue-500">
+            {truncateString(project.displayName, 14)}
             </span>
-            <h3 class="text-xl font-semibold text-gray-800 dark:text-neutral-300 dark:hover:text-white">
-            {project.title}
+            <h3 class="text-sm md:text-lg lg:text-lg font-semibold text-gray-800 dark:text-neutral-300 dark:hover:text-white">
+            {truncateString(project.title, 15)}
             </h3>
-            <p class="mt-3 text-gray-500 dark:text-neutral-500">
-            {project.description}
+            <p class="mt-3 text-xs md:text-md lg:text-md text-gray-500 dark:text-neutral-500">
+            {truncateString(project.description, 16)}
             </p>
           </div>
           <div class="mt-auto flex border-t border-gray-200 divide-x divide-gray-200 dark:border-neutral-700 dark:divide-neutral-700">
             <a class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-es-xl bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800" href="#">
-              {project.location}
+            {truncateString(project.location, 6)}
             </a>
             <a class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-ee-xl bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800" href="#">
               ${project.goal}
             </a>
           </div>
         </div>
-        )))} 
+        ))} 
     </div>
+    <div className="flex justify-between mt-4">
+        {currentPage > 1 && (
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            onClick={handlePreviousPage}
+          >
+            Previous
+          </button>
+        )}
+        {indexOfLastProject < filteredProjects.length && (
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            onClick={handleNextPage}
+          >
+            Next
+          </button>
+        )}
+      </div>
     </div>
   );
 };
