@@ -87,8 +87,9 @@ export default function Projectid() {
             </a>
 
             <div className="divider"></div>
-
+            <div className="h-20  overflow-y-auto ">
             <p className="my-5">{project.description}</p>
+            </div>
             <div className="divider"></div>
 
            {/* <div className="flex space-x-5">
