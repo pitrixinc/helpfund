@@ -5,12 +5,17 @@ import CTA from "@/components/CTA";
 import FeaturedProjects from "@/components/FeaturedProjects";
 const inter = Inter({ subsets: ["latin"] });
 import ProjectDetailsPage from "@/components/projects/SingleProject";
-import { AiFillHome, AiOutlineInbox, AiOutlineUser } from "react-icons/ai"
+import { AiFillHome, AiOutlineClockCircle, AiOutlineInbox, AiOutlineUser } from "react-icons/ai"
+import { MdOutlineAddComment, MdOutlineLocationOn, MdOutlineLockClock, MdVerified } from "react-icons/md";
+import { RiContactsBook3Line, RiMoneyDollarCircleLine, RiShareBoxLine, RiSkull2Line, RiTeamLine } from "react-icons/ri";
+import { BiCategoryAlt } from "react-icons/bi";
+import Moment from 'react-moment';
 
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { collection, doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase.config';
+import { BsGift } from "react-icons/bs";
 
 export default function Projectid() {
   const router = useRouter();
@@ -55,42 +60,104 @@ export default function Projectid() {
           <img src={project.image} className="w-full h-[300px] md:w-[700px] lg:w-[700px] md:h-[400px]  lg:h-[400px]" alt="project image" />
           <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-50 p-2 text-white flex justify-between font-semibold tracking-widest">
                {project.displayName}
-                <span className="">
-                   {project.location}
+                <span className="flex">
+                <span className="p-1"><MdOutlineLocationOn className="text-lg"/></span>   {project.location}
                 </span>
            </div>
-          <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-            <button className="btn btn-circle">
-              ❮
-            </button>
-           
-            <button className="btn btn-circle">
-              ❯
-            </button>
-          </div>
+          
         </div>
     </div>
     </div>
-          <div className="m-5">
+          <div className="m-5 h-[310px] overflow-y-auto ">
+            <div className="flex">
             <p className="text-2xl text-gray-700 font-bold">{project.title}</p>
 
-            {project.isApproved && (
-              <span className="text-rose-600">Verified</span>
+            {project.isVerified && (
+              <span className="text-rose-600 p-3"><MdVerified /></span>
             )}
-
-            <p className="my-5  text-gray-400">
-            <AiFillHome className=""/><span className=""> Posted on: {project.createdAt}</span> - <AiFillHome /> {project.location}
+            </div>
+            <p className="my-5 flex justify-between mr-2 font-normal">
+              <div className="flex">
+            <span className="text-gray-400 p-1"><AiOutlineClockCircle className="" />
+            </span>
+            <span className="text-gray-400">Created <Moment fromNow>{project.createdAt && project.createdAt}</Moment></span>
+            </div> - 
+            <div className="flex">
+            <span className="text-rose-600 p-1"><MdOutlineLockClock className="text-lg"/></span> 
+            <span className="text-rose-600">Ends <Moment fromNow>{project.deadline && project.deadline}</Moment></span>
+            </div>
             </p>
 
-            <a href="" className="mt-5">
-              <AiFillHome /> Open on Youtube
-            </a>
+            <div className="mt-5 flex text-rose-600 font-semibold">
+            <span className="p-1"><BiCategoryAlt/></span> <span>{project.category}</span>
+            </div>
 
             <div className="divider"></div>
-            <div className="h-20  overflow-y-auto ">
+           
             <p className="my-5">{project.description}</p>
-            </div>
+            
             <div className="divider"></div>
+
+            <div>
+                <div className="mt-5 flex font-semibold">
+                <span className="p-1"><RiMoneyDollarCircleLine /></span> <span>Outlined Budget</span>
+                </div>
+                <p className="my-1">{project.budget}</p>
+            </div>
+
+            <div className="divider"></div>
+
+            <div>
+                <div className="mt-5 flex font-semibold">
+                <span className="p-1"><RiTeamLine /></span> <span>Team Members</span>
+                </div>
+                <p className="my-1">{project.team}</p>
+            </div>
+
+            <div className="divider"></div>
+
+            <div>
+                <div className="mt-5 flex font-semibold">
+                <span className="p-1"><BsGift /></span> <span>Rewards</span>
+                </div>
+                <p className="my-1">{project.rewards}</p>
+            </div>
+
+            <div className="divider"></div>
+
+            <div>
+                <div className="mt-5 flex font-semibold">
+                <span className="p-1"><RiContactsBook3Line /></span> <span>Contact Info</span>
+                </div>
+                <p className="my-1">{project.contactInfo}</p>
+            </div>
+
+            <div className="divider"></div>
+
+            <div>
+                <div className="mt-5 flex font-semibold">
+                <span className="p-1"><RiShareBoxLine /></span> <span>Social Links</span>
+                </div>
+                <p className="my-1">{project.socialLinks}</p>
+            </div>
+
+            <div className="divider"></div>
+
+            <div>
+                <div className="mt-5 flex font-semibold">
+                <span className="p-1"><RiSkull2Line /></span> <span>Risks</span>
+                </div>
+                <p className="my-1">{project.risks}</p>
+            </div>
+
+            <div className="divider"></div>
+
+            <div>
+                <div className="mt-5 flex font-semibold">
+                <span className="p-1"><MdOutlineAddComment /></span> <span>FAQs</span>
+                </div>
+                <p className="my-1">{project.faqs}</p>
+            </div>
 
            {/* <div className="flex space-x-5">
               {ad.imagesUrl.map((image: string, index: number) => (
@@ -109,7 +176,7 @@ export default function Projectid() {
         <div className="lg:w-[30%] hidden lg:inline">
   <div className="bg-gray-200">
     <div className="bg-white p-5 text-sm border-double border rounded-lg">
-      <div className="font-bold text-lg text-black">GHS {project.goal}, {project.isApproved && (
+      <div className="font-bold text-lg text-black">GHS {project.goal}, {project.isVerified && (
               <span className="text-rose-600">Negotiable</span>
             )}</div>
             <div className="text-center my-4">

@@ -140,6 +140,7 @@ const Create = () => {
             socialLinks: socialLinks,
             contactInfo: contactInfo,
             isApproved: false,
+            isVerified: false,
           });
       
           const projectData = {
