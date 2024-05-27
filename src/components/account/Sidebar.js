@@ -55,7 +55,7 @@ const Sidebar = () => {
 
   return (
     <aside className='hidden sm:flex flex-col w-[20%] overflow-y-auto items-center xl:items-start xl:w-[340px] p-2 fixed h-full border-r border-gray-400 pr-0 xl:pr-8 no-scrollbar'>
-    <Link className=" text-teal-600 flex" href="#">
+    <Link className=" text-rose-600 flex" href="#">
           <span className="sr-only">Home</span>
           <svg className="h-8" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
