@@ -113,7 +113,7 @@ const ProjectDisplay = ({ filters, sortOption }) => {
 
 
   return (
-    <div class="max-w-[85rem] px-0 py-10 md:px-8 lg:px-8 lg:py-1 mx-auto">
+    <div class="max-w-[85rem] px-0 md:py-10 lg:py-10 md:px-8 lg:px-8 lg:py-1 md:mx-auto lg:mx-auto">
 
 <div class="relative mt-0 mb-5 h-40 rounded-t-xl bg-[url('https://preline.co/assets/svg/examples/abstract-bg-1.svg')] bg-no-repeat bg-cover bg-center">
         {/*
