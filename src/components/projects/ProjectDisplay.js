@@ -113,7 +113,7 @@ const ProjectDisplay = ({ filters, sortOption }) => {
 
 
   return (
-    <div class="max-w-[85rem] px-4 py-10 sm:px-1 lg:px-8 lg:py-1 mx-auto">
+    <div class="max-w-[85rem] px-0 py-10 md:px-8 lg:px-8 lg:py-1 mx-auto">
 
 <div class="relative mt-0 mb-5 h-40 rounded-t-xl bg-[url('https://preline.co/assets/svg/examples/abstract-bg-1.svg')] bg-no-repeat bg-cover bg-center">
         {/*
@@ -129,7 +129,7 @@ const ProjectDisplay = ({ filters, sortOption }) => {
        
       </div>
        
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 md:gap-6 lg:gap-6 xl:gap-6">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-1 md:gap-6 lg:gap-6 xl:gap-6">
 {/* 
       {filteredProjects.map(project => (
         <div key={project.id} className="bg-white p-4 rounded shadow">
