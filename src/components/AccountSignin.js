@@ -41,7 +41,9 @@ const AccountSignin = () => {
                 returnUrl = `/my-admin/${user.uid}/dashboard`;
               } else if (userData.isMiniAdmin) {
                 returnUrl = `/dashboard/${user.uid}/dashboard`;
-              } else if (userData.isCreator || userData.isDonor) {
+              } else if (userData.isCreator) {
+                returnUrl = `/account/${user.uid}/dashboard`;
+              } else if (userData.isDonor) {
                 returnUrl = `/account/${user.uid}/dashboard`;
               } else {
                 returnUrl = '/';
@@ -72,7 +74,9 @@ const AccountSignin = () => {
               returnUrl = `/my-admin/${user.uid}/dashboard`;
             } else if (userData.isMiniAdmin) {
               returnUrl = `/dashboard/${user.uid}/dashboard`;
-            } else if (userData.isCreator || userData.isDonor) {
+            } else if (userData.isCreator) {
+              returnUrl = `/account/${user.uid}/dashboard`;
+            } else if (userData.isDonor) {
               returnUrl = `/account/${user.uid}/dashboard`;
             } else {
               returnUrl = '/';
