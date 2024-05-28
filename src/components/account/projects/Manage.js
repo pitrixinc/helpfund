@@ -1,8 +1,11 @@
 import React from 'react'
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore';
 import { db } from '../../../firebase.config';
+import ProjectModal from './ProjectModal';
+import ProjectDeleteModal from './ProjectDeleteModal'
+import { toast } from 'react-toastify';
 
 const Manage = () => {
     const router = useRouter();
@@ -12,7 +15,9 @@ const Manage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [currentTab, setCurrentTab] = useState('All');
     const [searchTerm, setSearchTerm] = useState('');
-    const projectsPerPage = 3;
+    const [selectedProject, setSelectedProject] = useState(null);
+    const [projectToDelete, setProjectToDelete] = useState(null);
+    const projectsPerPage = 9;
   
     useEffect(() => {
       const fetchProjects = async () => {
@@ -79,23 +84,52 @@ const Manage = () => {
       setCurrentTab(tab);
       setCurrentPage(1); // Reset to first page on tab change
     };
+
+    const openModal = (project) => {
+      setSelectedProject(project);
+    };
   
+    const closeModal = () => {
+      setSelectedProject(null);
+    };
+  
+    const openDeleteModal = (project) => {
+      setProjectToDelete(project);
+    };
+  
+    const closeDeleteModal = () => {
+      setProjectToDelete(null);
+    };
+  
+    const handleDelete = async () => {
+      if (!projectToDelete) return;
+  
+      try {
+        await deleteDoc(doc(db, 'projects', projectToDelete.id));
+        setProjects(projects.filter(project => project.id !== projectToDelete.id));
+        toast.success("You have successfully deleted the project.")
+        closeDeleteModal();
+      } catch (error) {
+        toast.error('Error deleting project:', error);
+      }
+    };
+
 
   return (
     <section class="container px-4 mx-auto">
     <div class="sm:flex sm:items-center sm:justify-between">
         <div>
             <div class="flex items-center gap-x-3">
-                <h2 class="text-lg font-medium text-gray-800 dark:text-white">Projects</h2>
+                <h2 class="text-lg font-medium text-gray-800 dark:text-white">Your Projects</h2>
 
                 <span class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">240 vendors</span>
             </div>
 
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">These companies have purchased in the last 12 months.</p>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">Browse through your projects created for crowdfunding</p>
         </div>
 
         <div class="flex items-center mt-4 gap-x-3">
-            <button class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto dark:hover:bg-gray-800 dark:bg-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:border-gray-700">
+            <button onClick={() => router.push(`/projects/`)} class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto dark:hover:bg-gray-800 dark:bg-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:border-gray-700">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_3098_154395)">
                     <path d="M13.3333 13.3332L9.99997 9.9999M9.99997 9.9999L6.66663 13.3332M9.99997 9.9999V17.4999M16.9916 15.3249C17.8044 14.8818 18.4465 14.1806 18.8165 13.3321C19.1866 12.4835 19.2635 11.5359 19.0351 10.6388C18.8068 9.7417 18.2862 8.94616 17.5555 8.37778C16.8248 7.80939 15.9257 7.50052 15 7.4999H13.95C13.6977 6.52427 13.2276 5.61852 12.5749 4.85073C11.9222 4.08295 11.104 3.47311 10.1817 3.06708C9.25943 2.66104 8.25709 2.46937 7.25006 2.50647C6.24304 2.54358 5.25752 2.80849 4.36761 3.28129C3.47771 3.7541 2.70656 4.42249 2.11215 5.23622C1.51774 6.04996 1.11554 6.98785 0.935783 7.9794C0.756025 8.97095 0.803388 9.99035 1.07431 10.961C1.34523 11.9316 1.83267 12.8281 2.49997 13.5832" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
@@ -107,7 +141,7 @@ const Manage = () => {
                     </defs>
                 </svg>
 
-                <span>Import</span>
+                <span>Discover</span>
             </button>
 
             <button onClick={() => router.push(`/account/${id}/projects/create`)} class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-rose-600 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-rose-600">
@@ -202,22 +236,30 @@ const Manage = () => {
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
                            {currentProjects.map((project) => (
-                            <tr key={project.id}>
+                            <tr key={project.id} onClick={() => openModal(project)} className="cursor-pointer">
                                 <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                     <div>
-                                        <h2 class="font-medium text-gray-800 dark:text-white ">{project.title.slice(0,6)}</h2>
-                                        <p class="text-sm font-normal text-gray-600 dark:text-gray-400">{project.goal}</p>
+                                        <h2 class="font-medium text-gray-800 dark:text-white ">{project.title.slice(0,6)}...</h2>
+                                        <p class="text-sm font-normal text-gray-600 dark:text-gray-400">${project.goal}</p>
                                     </div>
                                 </td>
                                 <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
-                                    <div class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
-                                         {project.status}
+                                <div className={`inline px-3 py-1 text-sm font-normal rounded-full gap-x-2 ${
+      project.status === 'Approved'
+        ? 'text-emerald-500 bg-emerald-100/60 dark:bg-gray-800'
+        : project.status === 'Pending'
+        ? 'text-yellow-500 bg-yellow-100/60'
+        : project.status === 'Rejected' || project.status === 'Expired'
+        ? 'text-rose-500 bg-rose-100/60'
+        : 'text-emerald-500 bg-emerald-100/60 dark:bg-gray-800'
+    }`}>
+                                     {project.status}
                                     </div>
                                 </td>
                                 <td class="px-4 py-4 text-sm whitespace-nowrap">
                                     <div>
-                                        <h4 class="text-gray-700 dark:text-gray-200">{project.category.slice(0,8)}</h4>
-                                        <p class="text-gray-500 dark:text-gray-400">{project.description.slice(0,8)}e</p>
+                                        <h4 class="text-gray-700 dark:text-gray-200">{project.category.slice(0,8)}...</h4>
+                                        <p class="text-gray-500 dark:text-gray-400">{project.description.slice(0,8)}...</p>
                                     </div>
                                 </td>
                                 <td class="px-4 py-4 text-sm whitespace-nowrap">
@@ -237,12 +279,17 @@ const Manage = () => {
                                 </td>
 
                                 <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                    <button class="px-1 py-1 text-gray-500 transition-colors duration-200 rounded-lg dark:text-gray-300 hover:bg-gray-100">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
-                                        </svg>
-                                    </button>
+                                <button onClick={() => openDeleteModal(project)} class="text-rose-600 transition-colors duration-200 dark:hover:text-red-500 dark:text-gray-300 hover:text-red-500 focus:outline-none">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                            </svg>
+                                        </button>
                                 </td>
+                                {/* 
+                                <td className="py-2 px-4 border-b border-gray-200 dark:border-gray-700">
+                <button onClick={() => openModal(project)} className="text-blue-500 hover:underline">View</button>
+              </td>
+              */}
                             </tr>
                             ))}
                             </tbody>
@@ -285,9 +332,20 @@ const Manage = () => {
         </div>
       </div>
 
-                      
+         {/* Modal */}
+      <ProjectModal
+        project={selectedProject}
+        isOpen={selectedProject !== null}
+        closeModal={closeModal}
+      />  
+      
+      <ProjectDeleteModal
+        isOpen={projectToDelete !== null}
+        closeModal={closeDeleteModal}
+        confirmDelete={handleDelete}
+      />
 
-
+ 
 
 
 </section>
