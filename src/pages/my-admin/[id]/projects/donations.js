@@ -5,7 +5,7 @@ import CTA from "@/components/CTA";
 import FeaturedProjects from "@/components/FeaturedProjects";
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Dashboard() {
+export default function donations() {
   return (
     <Layout
       className={` ${inter.className}`}

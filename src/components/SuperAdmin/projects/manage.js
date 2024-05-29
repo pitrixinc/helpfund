@@ -27,12 +27,12 @@ const Manage = () => {
           const allProjects = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   
           // Filter projects by the current user
-          const userProjects = allProjects.filter(project => project.addedBy === id);
+         //  const userProjects = allProjects.filter(project => project.addedBy === id);
   
           // Sort projects by title in ascending order
-          userProjects.sort((a, b) => a.title.localeCompare(b.title));
+          allProjects.sort((a, b) => a.title.localeCompare(b.title));
   
-          setProjects(userProjects);
+          setProjects(allProjects);
         } catch (error) {
           console.error('Error fetching projects:', error);
         }
@@ -209,7 +209,7 @@ const Manage = () => {
                             <tr>
                                 <th scope="col" class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                     <button class="flex items-center gap-x-3 focus:outline-none">
-                                        <span>Title</span>
+                                        <span>Company</span>
 
                                         <svg class="h-3" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M2.13347 0.0999756H2.98516L5.01902 4.79058H3.86226L3.45549 3.79907H1.63772L1.24366 4.79058H0.0996094L2.13347 0.0999756ZM2.54025 1.46012L1.96822 2.92196H3.11227L2.54025 1.46012Z" fill="currentColor" stroke="currentColor" stroke-width="0.1" />
@@ -251,7 +251,7 @@ const Manage = () => {
         ? 'text-emerald-500 bg-emerald-100/60 dark:bg-gray-800'
         : project.status === 'Pending' || project.status === 'Verification Needed'
         ? 'text-yellow-500 bg-yellow-100/60'
-        : project.status === 'Rejected' || project.status === 'Expired' 
+        : project.status === 'Rejected' || project.status === 'Expired'
         ? 'text-rose-500 bg-rose-100/60'
         : 'text-emerald-500 bg-emerald-100/60 dark:bg-gray-800'
     }`}>

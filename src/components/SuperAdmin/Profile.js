@@ -33,14 +33,17 @@ const Profile = () => {
             setUserDetails(userData);
             setPhotoURL(userData.photoURL || '/images/defaultuser.jpg');
 
-            if (!userData.isCreator && userData.isMiniAdmin) {
-              router.push(`/dashboard/${id}/dashboard`);
-            } else if (!userData.isCreator && userData.isSuperAdmin) {
-              router.push(`/my-admin/${id}/dashboard`);
-            } else if (!userData.isDonor && userData.isMiniAdmin) {
-              router.push(`/dashboard/${id}/dashboard`);
-            } else if (!userData.isDonor && userData.isSuperAdmin) {
-              router.push(`/my-admin/${id}/dashboard`);
+             // Check user type and redirect accordingly
+             if (!userData.isSuperAdmin  && userData.isMiniAdmin) {
+                // User is not a creator or donor but is a mini admin, redirect to /dashboard
+                router.push(`/dashboard/${id}/dashboard`);
+            } // Check user type and redirect accordingly
+           else if (!userData.isSuperAdmin  && userData.isCreator) {
+                // User is not a creator or donor but is a mini admin, redirect to /dashboard
+                router.push(`/account/${id}/dashboard`);
+            } else if (!userData.isSuperAdmin && userData.isDonor) {
+                // User is not a customer but is a super admin, redirect to /my-admin
+                router.push(`/account/${id}/dashboard`);
             } 
           } else {
             console.log('User not found');

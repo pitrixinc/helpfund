@@ -11,6 +11,10 @@ const ProjectModal = ({ project, isOpen, closeModal }) => {
   const [goal, setGoal] = useState('');
   const [location, setLocation] = useState('');
   const [faqs, setFaqs] = useState('');
+  const [status, setStatus] = useState('');
+  const [displayName, setDisplayName] = useState('')
+  const [addedByImage, setAddedByImage] = useState('/images/defaultuser.jpg')
+  const [image, setImage] = useState('/images/defaultuser.jpg')
   const [rewards, setRewards] = useState('');
 
   useEffect(() => {
@@ -21,6 +25,10 @@ const ProjectModal = ({ project, isOpen, closeModal }) => {
       setGoal(project.goal || '');
       setLocation(project.location || '');
       setFaqs(project.faqs || '');
+      setStatus(project.status || '')
+      setDisplayName(project.displayName || '');
+      setAddedByImage(project.addedByImage || '/images/defaultuser.jpg')
+      setImage(project.image || '/images/defaultuser.jpg')
       setRewards(project.rewards || '');
     }
   }, [project]);
@@ -37,9 +45,9 @@ const ProjectModal = ({ project, isOpen, closeModal }) => {
         location,
         faqs,
         rewards,
-        status: 'Pending', // Update status to Pending
+        status,
       });
-      toast.success("Project Updated Successfully")
+      toast.success('Project Updated Successfully')
       closeModal();
     } catch (error) {
       toast.error('Error updating project:', error);
@@ -56,6 +64,21 @@ const ProjectModal = ({ project, isOpen, closeModal }) => {
           <MdClose className='text-[22px] cursor-pointer' onClick={closeModal} />
         </div>
         <form className='space-y-4'>
+        <div>
+            <label className='block text-sm font-medium'>Creator Image</label>
+            <img class=" inline-block size-24  rounded-full ring-4 ring-white dark:ring-neutral-900" src={addedByImage} alt="creator Image"/>
+              
+        </div>
+        <div>
+            <label className='block text-sm font-medium'>Creator Name</label>
+            <input type='text' className='w-full border rounded p-2' value={displayName} disabled />
+          </div>
+          <div>
+            <label className='block text-sm font-medium'>Project Image</label>
+            <div className="relative flex mb-4 items-center justify-center">
+               <img className='rounded-2xl max-h-60 object-contain' src={image} alt="project Image"/>
+            </div>
+          </div>
           <div>
             <label className='block text-sm font-medium'>Title</label>
             <input type='text' className='w-full border rounded p-2' value={title} onChange={(e) => setTitle(e.target.value)} />
@@ -83,6 +106,15 @@ const ProjectModal = ({ project, isOpen, closeModal }) => {
           <div>
             <label className='block text-sm font-medium'>Rewards</label>
             <textarea className='w-full border rounded p-2' value={rewards} onChange={(e) => setRewards(e.target.value)}></textarea>
+          </div>
+          <div>
+             <label className='block text-sm font-medium'>Status</label>
+             <select value={status} onChange={(e) => setStatus(e.target.value)} className='w-full border rounded p-2'>
+               <option value="Pending">Pending</option>
+               <option value="Approved">Approved</option>
+               <option value="Rejected">Rejected</option>
+               <option value="Verification Needed">Verification Needed</option>
+             </select>
           </div>
           <button type='button' className='w-full bg-blue-500 text-white p-2 rounded mt-4' onClick={handleUpdate}>Update</button>
         </form>
