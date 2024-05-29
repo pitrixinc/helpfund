@@ -44,16 +44,23 @@ const Create = () => {
                 setUserDetails(userData);
                 console.log('User Details:', userData);
       
-               // Check user type and redirect accordingly
-                if (!userData.isCreator || !userData.isDonor && userData.isMiniAdmin) {
-                    // User is not a creator or donor but is a mini admin, redirect to /dashboard
-                    router.push(`/dashboard/${id}/dashboard`);
-                } else if (!userData.isCustomer && userData.isSuperAdmin) {
-                    // User is not a customer but is a super admin, redirect to /my-admin
-                    router.push(`/my-admin/${id}/dashboard`);
-                } else {
-                    // User is a customer or user type not recognized, continue rendering the page
-                }
+              // Check user type and redirect accordingly
+              if (!userData.isCreator  && userData.isMiniAdmin) {
+                // User is not a creator or donor but is a mini admin, redirect to /dashboard
+                router.push(`/dashboard/${id}/dashboard`);
+            } else if (!userData.isCreator && userData.isSuperAdmin) {
+                // User is not a customer but is a super admin, redirect to /my-admin
+                router.push(`/my-admin/${id}/dashboard`);
+            }// Check user type and redirect accordingly
+           else if (!userData.isDonor  && userData.isMiniAdmin) {
+                // User is not a creator or donor but is a mini admin, redirect to /dashboard
+                router.push(`/dashboard/${id}/dashboard`);
+            } else if (!userData.isDonor && userData.isSuperAdmin) {
+                // User is not a customer but is a super admin, redirect to /my-admin
+                router.push(`/my-admin/${id}/dashboard`);
+            } else {
+                // User is a customer or user type not recognized, continue rendering the page
+            }
               } else {
                 console.log('User not found');
                 router.push('/signin');
