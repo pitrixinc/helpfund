@@ -10,10 +10,11 @@ import { MdOutlineAddComment, MdOutlineLocationOn, MdOutlineLockClock, MdVerifie
 import { RiContactsBook3Line, RiMoneyDollarCircleLine, RiShareBoxLine, RiSkull2Line, RiTeamLine } from "react-icons/ri";
 import { BiCategoryAlt } from "react-icons/bi";
 import Moment from 'react-moment';
+import { toast } from 'react-toastify';
 
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
-import { collection, doc, getDoc, addDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, addDoc, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase.config';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { BsGift } from "react-icons/bs";
@@ -28,7 +29,10 @@ export default function Projectid() {
   const [expiryDate, setExpiryDate] = useState('');
   const [cvv, setCvv] = useState('');
   const [amount, setAmount] = useState('');
+  const [totalDonations, setTotalDonations] = useState(0);
+  const [donationCount, setDonationCount] = useState(0);
   const [userData, setUserData] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     const auth = getAuth();
@@ -42,7 +46,7 @@ export default function Projectid() {
         if (userDocSnapshot.exists()) {
           const userData = userDocSnapshot.data();
           setUserData(userData);
-          console.log("User data", userData)
+        //  console.log("User data", userData)
         }
       } else {
         setCurrentUser(null);
@@ -52,8 +56,48 @@ export default function Projectid() {
 
     return () => unsubscribe();
   }, []);
-  
 
+  useEffect(() => {
+    const fetchProjectDetails = async () => {
+      try {
+        const projectDoc = await getDoc(doc(db, 'projects', projectId));
+        if (projectDoc.exists()) {
+          setProject({ id: projectDoc.id, ...projectDoc.data() });
+        } else {
+          toast.error('Project not found');
+        }
+      } catch (error) {
+        toast.error('Error fetching project details:', error);
+      }
+    };
+
+    const fetchDonations = async () => {
+      try {
+        const donationsQuery = query(collection(db, 'donations'), where('projectId', '==', projectId));
+        const donationsSnapshot = await getDocs(donationsQuery);
+
+        let total = 0;
+        let count = 0;
+
+        donationsSnapshot.forEach(doc => {
+          total += doc.data().amount;
+          count += 1;
+        });
+
+        setTotalDonations(total);
+        setDonationCount(count);
+      } catch (error) {
+        console.error('Error fetching donations:', error);
+      }
+    };
+
+    if (projectId) {
+      fetchProjectDetails();
+      fetchDonations();
+    }
+  }, [projectId]);
+  
+/*
   useEffect(() => {
     const fetchProjectDetails = async () => {
       try {
@@ -68,7 +112,7 @@ export default function Projectid() {
       }
     };
 
-/*
+
     const fetchUserDetails = async () => {
       if (user) {
         try {
@@ -82,14 +126,14 @@ export default function Projectid() {
       }
     };
         fetchUserDetails();
-*/
+
     if (projectId) {
       fetchProjectDetails();
     }
 
 
   }, [projectId]);
-
+*/
 
   const handleDonate = async () => {
     if (!userData) {
@@ -103,30 +147,52 @@ export default function Projectid() {
     // Handle payment logic here, e.g., integrate with a payment gateway
     // Assuming payment is successful
 
+    const donationAmountNumber = parseFloat(amount);
+    if (isNaN(donationAmountNumber) || donationAmountNumber <= 0) {
+      setErrorMessage('Please enter a valid donation amount.');
+      toast.error('Please enter a valid donation amount.');
+      return;
+    }
+
+    const amountLeft = project.goal - totalDonations;
+    if (donationAmountNumber > amountLeft) {
+      setErrorMessage(`You can only donate up to $ ${amountLeft} for this project.`);
+      toast.error(`You can only donate up to $ ${amountLeft} for this project.`);
+      return;
+    }
+
     try {
       await addDoc(collection(db, 'donations'), {
         projectId,
         projectTitle: project.title,
+        projectImage: project.image,
         userId: currentUser.uid,
         userName: currentUser.displayName,
-        amount: Number(amount),
-        timestamp: new Date(),
+        userImage: currentUser.photoURL,
+        amount: donationAmountNumber,
+        timestamp:  new Date().toISOString(),
       });
-      alert('Thank you for your donation!');
+      toast.success(`Thank you for donating $ ${donationAmountNumber} !`);
       setShowCreditCardModal(false);
       setCardNumber('');
       setExpiryDate('');
+      setErrorMessage('');
       setCvv('');
       setAmount('');
     } catch (error) {
-      console.error('Error making donation:', error);
-      alert('Failed to make a donation. Please try again later.');
+      toast.error('Error making donation:', error);
+      setErrorMessage('An error occurred while making your donation. Please try again.');
     }
   };
+
+   
 
   if (!project) {
     return <div>Loading...</div>; // Display loading indicator while fetching project details
   }
+
+  const donationPercentage = (totalDonations / project.goal) * 100;
+  const amountLeft = project.goal - totalDonations;
 
   return (
     <Layout className={` ${inter.className}`}>
@@ -226,14 +292,15 @@ export default function Projectid() {
         <div className="lg:w-[30%] hidden lg:inline">
           <div className="bg-gray-200">
             <div className="bg-white p-5 text-sm border-double border rounded-lg">
-              <div className="font-bold text-lg text-black">GHS {project.goal}, {project.isVerified && (
+              <div className="font-bold text-lg text-black">GHS {project.goal} {project.isVerified && (
                 <span className="text-rose-600">Negotiable</span>
               )}</div>
-              <div className="text-center my-4">
-                <span className="text-rose-600 text-[11px]">Market Price: GHS {project.goal}</span>
+              <div className="text-center flex my-4 font-semibold">
+                <span className="p-1"><RiTeamLine /></span> <span>{donationCount} Donators</span>
+            
               </div>
-              <button className="items-center text-rose-500 justify-center w-full p-2 bg-white border border-rose-500 hover:bg-green-100 hover:border-green-600">
-                Request call back
+              <button className="items-center text-rose-500 justify-center w-full p-2 font-semibold bg-white border border-rose-500 hover:bg-green-100 hover:border-green-600">
+              ${totalDonations} donated, ${amountLeft} left
               </button>
             </div>
           </div>
@@ -243,21 +310,45 @@ export default function Projectid() {
                 <img className="w-10 h-10 rounded-full" src={project.addedByImage} alt="profile" />
                 <div className="font-medium dark:text-black mb-2">
                   <div className="text-black">{project.displayName && project.displayName.slice(0, 15)}</div>
-                  <div className="text-[8px] text-black bg-gray-100 rounded-lg"><AiFillHome className="text-[12px] text-yellow-600" /> Typically replies within a few hours</div>
-                  <AiFillHome className="text-[10px]" /><span className="text-[10px]"> Posted on: {project.createdAt}</span>
+                  <div className="text-[8px] flex text-black bg-gray-100 rounded-lg"><AiFillHome className="text-[12px] text-yellow-600 mt-1 mr-1" /> Typically replies within a few hours</div>
+                  <div className="text-[8px] flex text-black bg-gray-100 rounded-lg"><AiFillHome className="text-[12px] mt-1 mr-1" /><span className="text-[10px]"> Creator since <Moment fromNow>{userData && userData.createdAt}</Moment></span></div> 
                 </div>
               </div>
+              {totalDonations < project.goal ? (
               <button
                 className="items-center bg-rose-500 justify-center w-full p-2 text-white border border-rose-500 hover:bg-green-100 hover:text-green-500 hover:border-green-600 mb-4"
                 onClick={handleDonate}
               >
                 Make Donation
               </button>
+              ) : (
+                  <button
+                    disabled
+                    className="items-center bg-green-500 justify-center w-full p-2 text-white border border-green-500 mb-4"
+                  >
+                    Goal Achieved
+                  </button>
+              )}
               <button className="items-center text-rose-500 justify-center w-full p-2 bg-white border border-rose-500 hover:bg-green-100 hover:border-green-600">
-                Start Chat
+              <div className="relative pt-1">
+                <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-200">
+                  <div style={{ width: `${donationPercentage}%` }} className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-rose-500"></div>
+                </div>
+                <span className="text-gray-600 font-semibold">{donationPercentage.toFixed(2)}% funded</span>
+              </div>
               </button>
             </div>
           </div>
+
+{/*
+          <div className="relative pt-1">
+                <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-200">
+                  <div style={{ width: `${donationPercentage}%` }} className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-rose-600"></div>
+                </div>
+                <span className="text-gray-600">{donationPercentage.toFixed(2)}% funded</span>
+              </div>
+              */}
+
           <div className="bg-gray-200 mt-4">
             <div className="bg-white p-5 text-sm border rounded-lg">
               <div className="font-bold text-center text-black">Safety tips</div>
@@ -291,7 +382,8 @@ export default function Projectid() {
           </div>
         </div>
       </div>
-      {showCreditCardModal && (
+      {
+      showCreditCardModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-5 rounded-lg">
             <h2 className="text-xl font-bold mb-4">Make a Donation</h2>
@@ -345,6 +437,7 @@ export default function Projectid() {
                 Make Payment
               </button>
             </div>
+            {errorMessage && <p className="text-red-600 text-center font-semibold">{errorMessage}</p>}
           </div>
         </div>
       )}

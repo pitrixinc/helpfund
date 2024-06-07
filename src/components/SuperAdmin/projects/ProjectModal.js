@@ -116,6 +116,9 @@ const ProjectModal = ({ project, isOpen, closeModal }) => {
                <option value="Verification Needed">Verification Needed</option>
              </select>
           </div>
+          <div>
+             <label className='block text-sm font-medium'>Verify Project</label>
+          </div>
           <button type='button' className='w-full bg-blue-500 text-white p-2 rounded mt-4' onClick={handleUpdate}>Update</button>
         </form>
       </div>

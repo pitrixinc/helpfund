@@ -1,10 +1,11 @@
 import React from 'react'
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, deleteDoc, where, query } from 'firebase/firestore';
 import { db } from '../../../firebase.config';
 import ProjectModal from './ProjectModal';
 import ProjectDeleteModal from './ProjectDeleteModal'
+import DonatorListModal from './DonatorListModal';
 import { toast } from 'react-toastify';
 
 const Manage = () => {
@@ -17,7 +18,10 @@ const Manage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedProject, setSelectedProject] = useState(null);
     const [projectToDelete, setProjectToDelete] = useState(null);
+    const [isDonatorModalOpen, setIsDonatorModalOpen] = useState(false);
+    const [currentDonators, setCurrentDonators] = useState([]);
     const projectsPerPage = 9;
+    const [donationStats, setDonationStats] = useState({});
   
     useEffect(() => {
       const fetchProjects = async () => {
@@ -117,6 +121,48 @@ const Manage = () => {
     };
 
 
+
+    const calculateDonationStats = async (projectId) => {
+      try {
+          const donationSnapshot = await getDocs(query(collection(db, 'donations'), where('projectId', '==', projectId)));
+          const totalAmountDonated = donationSnapshot.docs.reduce((total, doc) => total + doc.data().amount, 0);
+          const donatorImages = donationSnapshot.docs.map(doc => doc.data().userImage);
+          return { totalAmountDonated, donatorImages };
+      } catch (error) {
+          console.error('Error calculating donation stats:', error);
+          return { totalAmountDonated: 0, donatorImages: [] };
+      }
+  };
+
+  useEffect(() => {
+      const fetchDonationStats = async () => {
+          const donationStatsPromises = currentProjects.map(project => calculateDonationStats(project.id));
+          const donationStatsResults = await Promise.all(donationStatsPromises);
+          const stats = {};
+          donationStatsResults.forEach((result, index) => {
+              stats[currentProjects[index].id] = result;
+          });
+          setDonationStats(stats);
+      };
+
+      if (currentProjects.length > 0) {
+          fetchDonationStats();
+      }
+  }, [currentProjects]);
+
+  const handleDonatorClick = async (projectId) => {
+    try {
+        const donationSnapshot = await getDocs(query(collection(db, 'donations'), where('projectId', '==', projectId)));
+        const donators = donationSnapshot.docs.map(doc => doc.data());
+        setCurrentDonators(donators);
+        setIsDonatorModalOpen(true);
+    } catch (error) {
+        toast.error('Error fetching donators:', error);
+    }
+};
+
+
+
   return (
     <section class="container px-4 mx-auto">
     <div class="sm:flex sm:items-center sm:justify-between">
@@ -124,7 +170,7 @@ const Manage = () => {
             <div class="flex items-center gap-x-3">
                 <h2 class="text-lg font-medium text-gray-800 dark:text-white">Your Projects</h2>
 
-                <span class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">240 vendors</span>
+                <span class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">{projects.length} projects</span>
             </div>
 
             <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">Browse through your projects created for crowdfunding</p>
@@ -229,7 +275,7 @@ const Manage = () => {
 
                                 <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Users</th>
 
-                                <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">License use</th>
+                                <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Donation Tracking Pin</th>
 
                                 <th scope="col" class="relative py-3.5 px-4">
                                     <span class="sr-only">Edit</span>
@@ -266,18 +312,61 @@ const Manage = () => {
                                 </td>
                                 <td class="px-4 py-4 text-sm whitespace-nowrap">
                                     <div class="flex items-center">
-                                        <img class="object-cover w-6 h-6 -mx-1 border-2 border-white rounded-full dark:border-gray-700 shrink-0" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=256&q=80" alt=""/>
+                                        {/*<img class="object-cover w-6 h-6 -mx-1 border-2 border-white rounded-full dark:border-gray-700 shrink-0" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=256&q=80" alt=""/>
                                         <img class="object-cover w-6 h-6 -mx-1 border-2 border-white rounded-full dark:border-gray-700 shrink-0" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=256&q=80" alt=""/>
                                         <img class="object-cover w-6 h-6 -mx-1 border-2 border-white rounded-full dark:border-gray-700 shrink-0" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1256&q=80" alt=""/>
                                         <img class="object-cover w-6 h-6 -mx-1 border-2 border-white rounded-full dark:border-gray-700 shrink-0" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=256&q=80" alt=""/>
-                                        <p class="flex items-center justify-center w-6 h-6 -mx-1 text-xs text-blue-600 bg-blue-100 border-2 border-white rounded-full">+4</p>
+                                        <p class="flex items-center justify-center w-6 h-6 -mx-1 text-xs text-blue-600 bg-blue-100 border-2 border-white rounded-full">+4</p>*/}
+                                      {donationStats[project.id] && donationStats[project.id].donatorImages.slice(0, 4).map((donatorImage, index) => (
+                                <img
+                                    key={index}
+                                    className="object-cover w-6 h-6 -mx-1 border-2 border-white rounded-full dark:border-gray-700 shrink-0"
+                                    src={donatorImage}
+                                    alt={`Donator ${index + 1}`}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleDonatorClick(project.id);
+                                  }}
+                                />
+                            ))}
+                            {/* Donator Total */}
+                            {donationStats[project.id] && donationStats[project.id].donatorImages.length > 4 && (
+                                <p className="flex items-center justify-center w-6 h-6 -mx-"  onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleDonatorClick(project.id);
+                              }}>
+                                    +{donationStats[project.id].donatorImages.length - 4}
+                                </p>
+                            )} 
                                     </div>
                                 </td>
 
                                 <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                  {/**
                                     <div class="w-48 h-1.5 bg-blue-200 overflow-hidden rounded-full">
                                         <div class="bg-blue-500 w-2/3 h-1.5"></div>
                                     </div>
+                            */}
+                             {donationStats[project.id] && (
+                            <div className="mt-2"  
+                              onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleDonatorClick(project.id);
+                              }}>
+                                <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                                    <div
+                                        className="bg-rose-500 h-2.5 rounded-full"
+                                        style={{ width: `${(donationStats[project.id].totalAmountDonated / project.goal) * 100}%` }}
+                                    ></div>
+                                </div>
+                                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                    {donationStats[project.id].totalAmountDonated} / {project.goal} ({((donationStats[project.id].totalAmountDonated / project.goal) * 100).toFixed(2)}%)
+                                </p>
+                                <p className="mt-1 text-xs text-red-500 dark:text-red-400">
+                                    ${project.goal - donationStats[project.id].totalAmountDonated} left to reach goal
+                                </p>
+                            </div>
+                        )}
                                 </td>
 
                                 <td class="px-4 py-4 text-sm whitespace-nowrap">
@@ -347,6 +436,11 @@ const Manage = () => {
         confirmDelete={handleDelete}
       />
 
+    <DonatorListModal
+        isOpen={isDonatorModalOpen}
+        onClose={() => setIsDonatorModalOpen(false)}
+        donators={currentDonators}
+    />
  
 
 

@@ -87,6 +87,7 @@ const SignupDonor = () => {
         isDonor: true,
         isCreator: false,
         referralCode: referralCode,
+        createdAt: new Date().toISOString()
       });
   
       setLoading(false);
