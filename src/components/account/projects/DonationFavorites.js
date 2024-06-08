@@ -62,7 +62,7 @@ const DonationFavorite = () => {
       <div className="mx-auto max-w-screen-2xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-800 md:text-3xl">Favorite Donations</h2>
-          <p className="text-gray-600 mt-4">Here are the projects you've donated to multiple times.</p>
+          <p className="text-gray-600 mt-4">Here are the projects you&apos;ve donated to multiple times.</p>
         </div>
       </div>
       
@@ -85,7 +85,7 @@ const DonationFavorite = () => {
                   </div>
                 ))
               ) : (
-                <p className="text-gray-600">You haven't donated to any project multiple times yet.</p>
+                <p className="text-gray-600">You haven&apos;t donated to any project multiple times yet.</p>
               )}
             </div>
           </div>
