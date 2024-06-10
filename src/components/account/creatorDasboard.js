@@ -88,6 +88,7 @@ const Dashboard = () => {
         }
       } catch (error) {
         toast.error('Error fetching projects and donations:', error.message);
+        console.error('Error fetching projects and donations:', error.message);
       } finally {
         setLoading(false);
       }
@@ -120,8 +121,8 @@ const Dashboard = () => {
               </h2>
 
               <p className="hidden text-white/90 sm:mt-4 sm:block">
-                Welcome to your dashboard! Track your project progress,
-                view total donations, and manage your active and expired projects efficiently.
+                 {userDetails.isCreator &&  (<>Welcome to your dashboard! Track your project progress and manage your active and expired projects efficiently.</>)}
+                 {userDetails.isDonor &&  (<>Welcome to your dashboard! Browse through projects, Track your Donations and view your favorite projects efficiently.</>)}
               </p>
 
               <div className="mt-4 md:mt-8">

@@ -129,7 +129,7 @@ const ProjectDisplay = ({ filters, sortOption }) => {
        
       </div>
        
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-1 md:gap-6 lg:gap-6 xl:gap-6">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-1 md:gap-6 lg:gap-6 xl:gap-6 mb-20">
 {/* 
       {filteredProjects.map(project => (
         <div key={project.id} className="bg-white p-4 rounded shadow">
@@ -166,7 +166,7 @@ const ProjectDisplay = ({ filters, sortOption }) => {
         </div>
         ))} 
     </div>
-    <div className="flex justify-between mt-4">
+    <div className="flex justify-between mt-4 mb-4">
         {currentPage > 1 && (
           <button
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
