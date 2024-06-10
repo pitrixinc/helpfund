@@ -2,9 +2,11 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { collection, doc, getDoc, addDoc, query, where, getDocs } from 'firebase/firestore';
-import { db } from '../../firebase.config';
+import { db, auth } from '../../firebase.config';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { MdClose } from 'react-icons/md';
+import { signOut } from 'firebase/auth';
+import { toast } from 'react-toastify';
 
 
 const Sidebar = ({ onFilterChange, onSortChange }) => {
