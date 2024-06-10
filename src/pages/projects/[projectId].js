@@ -18,7 +18,6 @@ import { collection, doc, getDoc, addDoc, query, where, getDocs } from 'firebase
 import { db } from '../../firebase.config';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { BsGift } from "react-icons/bs";
-import PaystackPop from '@paystack/inline-js';
 
 export default function Projectid() {
   const router = useRouter();
@@ -138,11 +137,14 @@ export default function Projectid() {
 */
 
 
+
+
+
 const handlePayment = async (e) => {
   e.preventDefault();
   setLoading(true);
 
- const email = currentUser.email
+  const email = currentUser.email
 
   if (!amount || isNaN(amount) || amount <= 0) {
     toast.error('Please enter a valid amount.');
@@ -158,31 +160,31 @@ const handlePayment = async (e) => {
       setLoading(false);
       return;
     }
-  
-  const paystack = new PaystackPop();
-  paystack.newTransaction({
-    key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY, // Replace with your Paystack public key
-    email,
-    amount: amount * 100, // Amount in kobo (100 kobo = 1 GHS)
-    currency: 'GHS',
-    callback: async (response) => {
-      if (response.status === 'success') {
-        await handleDonate();
-      } else {
-        toast.error('Payment was not successful. Please try again.');
+
+  if (typeof window !== "undefined") {
+    const PaystackPop = (await import('@paystack/inline-js')).default;
+
+    const paystack = new PaystackPop();
+    paystack.newTransaction({
+      key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
+      email,
+      amount: amount * 100, // Amount in kobo (100 kobo = 1 GHS)
+      currency: 'GHS',
+      callback: async (response) => {
+        if (response.status === 'success') {
+          await handleDonate();
+        } else {
+          toast.error('Payment was not successful. Please try again.');
+          setLoading(false);
+        }
+      },
+      onClose: () => {
+        toast.error('Payment was not completed.');
         setLoading(false);
-        return;
-      }
-    },
-    onClose: () => {
-      toast.error('Payment was not completed.');
-      setLoading(false);
-      return;
-    },
-  });
+      },
+    });
+  }
 };
-
-
 
 
   

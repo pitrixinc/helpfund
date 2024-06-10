@@ -8,7 +8,6 @@ import { setDoc, doc, getDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
-import PaystackPop from '@paystack/inline-js';
 
 const SignupCreator = () => {
 
@@ -51,29 +50,33 @@ const SignupCreator = () => {
     e.preventDefault();
     setLoading(true);
 
-    const paystack = new PaystackPop();
-    paystack.newTransaction({
-      key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY, // Replace with your Paystack public key
-      email,
-      amount: 1600, // Amount in kobo (1600 kobo = 16 GHS)
-      currency: 'GHS',
-      callback: async (response) => {
-        if (response.status === 'success') {
-          await handleSignUp();
-        } else {
-          toast.error('Payment was not successful. Please try again.');
+    if (typeof window !== "undefined") {
+      const PaystackPop = (await import('@paystack/inline-js')).default;
+
+      const paystack = new PaystackPop();
+      paystack.newTransaction({
+        key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
+        email,
+        amount: 1600,
+        currency: 'GHS',
+        callback: async (response) => {
+          if (response.status === 'success') {
+            await handleSignUp();
+          } else {
+            toast.error('Payment was not successful. Please try again.');
+            setLoading(false);
+            return;
+          }
+        },
+        onClose: () => {
+          toast.error('Payment was not completed.');
           setLoading(false);
           return;
-        }
-      },
-      onClose: () => {
-        toast.error('Payment was not completed.');
-        setLoading(false);
-        return;
-      },
-    });
+        },
+      });
+    }
   };
-
+  
   const handleSignUp = async () => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
