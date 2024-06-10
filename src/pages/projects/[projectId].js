@@ -144,6 +144,11 @@ const handlePayment = async (e) => {
   e.preventDefault();
   setLoading(true);
 
+  if (!userData) {
+    router.push('/signin');
+    toast.error('Please sign in before you donate!')
+  }
+
   const email = currentUser.email
 
   if (!amount || isNaN(amount) || amount <= 0) {
