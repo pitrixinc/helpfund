@@ -18,6 +18,7 @@ import { collection, doc, getDoc, addDoc, query, where, getDocs } from 'firebase
 import { db } from '../../firebase.config';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { BsGift } from "react-icons/bs";
+import PaystackPop from '@paystack/inline-js';
 
 export default function Projectid() {
   const router = useRouter();
@@ -33,6 +34,7 @@ export default function Projectid() {
   const [donationCount, setDonationCount] = useState(0);
   const [userData, setUserData] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const auth = getAuth();
@@ -135,31 +137,68 @@ export default function Projectid() {
   }, [projectId]);
 */
 
-  const handleDonate = async () => {
-    if (!userData) {
-      router.push('/signin');
-    } else {
-      setShowCreditCardModal(true);
-    }
-  };
 
-  const handlePayment = async () => {
+const handlePayment = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+
+ const email = currentUser.email
+
+  if (!amount || isNaN(amount) || amount <= 0) {
+    toast.error('Please enter a valid amount.');
+    setLoading(false);
+    return;
+  }
+
+  const donationAmountNumber = parseFloat(amount);
+  const amountLeft = project.goal - totalDonations;
+    if (donationAmountNumber > amountLeft) {
+      setErrorMessage(`You can only donate up to $ ${amountLeft} for this project.`);
+      toast.error(`You can only donate up to $ ${amountLeft} for this project.`);
+      setLoading(false);
+      return;
+    }
+  
+  const paystack = new PaystackPop();
+  paystack.newTransaction({
+    key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY, // Replace with your Paystack public key
+    email,
+    amount: amount * 100, // Amount in kobo (100 kobo = 1 GHS)
+    currency: 'GHS',
+    callback: async (response) => {
+      if (response.status === 'success') {
+        await handleDonate();
+      } else {
+        toast.error('Payment was not successful. Please try again.');
+        setLoading(false);
+        return;
+      }
+    },
+    onClose: () => {
+      toast.error('Payment was not completed.');
+      setLoading(false);
+      return;
+    },
+  });
+};
+
+
+
+
+  
+  const handleDonate = async () => {
     // Handle payment logic here, e.g., integrate with a payment gateway
     // Assuming payment is successful
 
     const donationAmountNumber = parseFloat(amount);
-    if (isNaN(donationAmountNumber) || donationAmountNumber <= 0) {
+ /*  if (isNaN(donationAmountNumber) || donationAmountNumber <= 0) {
       setErrorMessage('Please enter a valid donation amount.');
       toast.error('Please enter a valid donation amount.');
       return;
     }
+    */
 
-    const amountLeft = project.goal - totalDonations;
-    if (donationAmountNumber > amountLeft) {
-      setErrorMessage(`You can only donate up to $ ${amountLeft} for this project.`);
-      toast.error(`You can only donate up to $ ${amountLeft} for this project.`);
-      return;
-    }
+    
 
     try {
       await addDoc(collection(db, 'donations'), {
@@ -179,9 +218,11 @@ export default function Projectid() {
       setErrorMessage('');
       setCvv('');
       setAmount('');
+      setLoading(false)
     } catch (error) {
       toast.error('Error making donation:', error);
       setErrorMessage('An error occurred while making your donation. Please try again.');
+      setLoading(false)
     }
   };
 
@@ -315,12 +356,18 @@ export default function Projectid() {
                 </div>
               </div>
               {totalDonations < project.goal ? (
+                <>
+                  <input type="number" placeholder="Enter Donation Amount (GHS)" value={amount} onChange={(e) => setAmount(e.target.value)} required
+                   class="py-2 mb-1 px-3 pe-11 block w-full border-gray-200 shadow-sm rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" />
               <button
                 className="items-center bg-rose-500 justify-center w-full p-2 text-white border border-rose-500 hover:bg-green-100 hover:text-green-500 hover:border-green-600 mb-4"
-                onClick={handleDonate}
+                onClick={handlePayment}
+                disabled={loading}
               >
-                Make Donation
+                {loading ? 'Processing...' : 'Proceed By Donating GHS' + amount}
               </button>
+              {errorMessage && <p className="text-red-600 text-center font-semibold">{errorMessage}</p>}
+              </>
               ) : (
                   <button
                     disabled

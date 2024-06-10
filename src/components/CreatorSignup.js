@@ -8,6 +8,7 @@ import { setDoc, doc, getDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
+import PaystackPop from '@paystack/inline-js';
 
 const SignupCreator = () => {
 
@@ -46,22 +47,41 @@ const SignupCreator = () => {
   ];
 
   
-
-  const handleSignUp = async (e) => {
+  const handlePayment = async (e) => {
     e.preventDefault();
     setLoading(true);
-  
+
+    const paystack = new PaystackPop();
+    paystack.newTransaction({
+      key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY, // Replace with your Paystack public key
+      email,
+      amount: 1600, // Amount in kobo (1600 kobo = 16 GHS)
+      currency: 'GHS',
+      callback: async (response) => {
+        if (response.status === 'success') {
+          await handleSignUp();
+        } else {
+          toast.error('Payment was not successful. Please try again.');
+          setLoading(false);
+          return;
+        }
+      },
+      onClose: () => {
+        toast.error('Payment was not completed.');
+        setLoading(false);
+        return;
+      },
+    });
+  };
+
+  const handleSignUp = async () => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       const storageRef = ref(storage, `profile-images/${user.uid}`);
       const uploadTaskSnapshot = await uploadBytes(storageRef, selectedImage);
-  
-      // Get the download URL directly from the snapshot
       const imageUrl = await getDownloadURL(uploadTaskSnapshot.ref);
-  
-  
-      // Update user profile
+
       await updateProfile(user, {
         displayName: username,
         photoURL: imageUrl,
@@ -70,8 +90,7 @@ const SignupCreator = () => {
         currency: currency,
         occupation: occupation,
       });
-  
-      // Store user data on the Firestore database
+
       await setDoc(doc(db, 'users', user.uid), {
         uid: user.uid,
         displayName: username,
@@ -87,21 +106,21 @@ const SignupCreator = () => {
         isDonor: false,
         isCreator: true,
         referralCode: referralCode,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        isSubscribed: true,
       });
-  
+
       setLoading(false);
-      toast.success("You signed up a creator sucessfully")
-      // Sign out the user
+      toast.success("You signed up a creator successfully");
       await signOut(auth);
       router.push('/signin');
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message);
       setLoading(false);
       toast.error('Something went wrong');
     }
   };
-  
+
 
   // Check if the user is already authenticated
   useEffect(() => {
@@ -266,7 +285,7 @@ const SignupCreator = () => {
           </div> </h2></div>) : (
           <form style={{
           }}
-          onSubmit={handleSignUp}
+          onSubmit={handlePayment}
           encType="multipart/form-data" // Add this line for file uploads
           >
           <input
@@ -437,7 +456,7 @@ const SignupCreator = () => {
             </div>
           {/* End of Additional Fields */}
           <button
-            type= 'submit'
+            type="submit" disabled={loading}
             style={{
               width: '100%',
               padding: '15px',
@@ -451,7 +470,7 @@ const SignupCreator = () => {
             }}
             className="bg-rose-600"
           >
-            Sign Up
+            Proceed By Paying GHS16
           </button>
           
           <Link
