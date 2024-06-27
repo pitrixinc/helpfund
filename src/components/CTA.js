@@ -1,6 +1,9 @@
 import React from 'react'
+import { useRouter } from 'next/router';
 
 const CTA = () => {
+  const router = useRouter()
+
   return (
     <section>
   <div className="mx-auto max-w-screen-2xl px-4 py-8 sm:px-6 lg:px-8">
@@ -8,22 +11,21 @@ const CTA = () => {
       <div className="bg-blue-600 p-8 md:p-12 lg:px-16 lg:py-24">
         <div className="mx-auto max-w-xl text-center">
           <h2 className="text-2xl font-bold text-white md:text-3xl">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit
+          Fuel Dreams: Empower Tomorrow with Your Contribution Today
           </h2>
 
           <p className="hidden text-white/90 sm:mt-4 sm:block">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Et, egestas tempus tellus etiam
-            sed. Quam a scelerisque amet ullamcorper eu enim et fermentum, augue. Aliquet amet
-            volutpat quisque ut interdum tincidunt duis.
+          Join us in transforming ideas into reality. Support innovative projects and make a difference. 
+          Every contribution brings us closer to a brighter future. Empower change, one pledge at a time.
           </p>
 
           <div className="mt-4 md:mt-8">
-            <a
-              href="#"
-              className="inline-block rounded border border-white bg-white px-12 py-3 text-sm font-medium text-blue-500 transition hover:bg-transparent hover:text-white focus:outline-none focus:ring focus:ring-yellow-400"
+            <div
+              onClick={() => router.push(`/projects`)}
+              className="cursor-pointer inline-block rounded border border-white bg-white px-12 py-3 text-sm font-medium text-blue-500 transition hover:bg-transparent hover:text-white focus:outline-none focus:ring focus:ring-yellow-400"
             >
               Get Started Today
-            </a>
+            </div>
           </div>
         </div>
       </div>

@@ -14,7 +14,6 @@ import Blogs from "@/components/blog";
 import Testimonials from "@/components/Testimonials";
 import PopularProjects from "@/components/PopularProjects";
 import Features from "@/components/Features";
-import RealFeaturedProjects from "@/components/RealFeaturedProjects";
 
 const inter = Inter({ subsets: ["latin"] });
 
