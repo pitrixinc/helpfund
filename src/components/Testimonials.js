@@ -2,36 +2,36 @@ import { useEffect } from 'react';
 import KeenSlider from 'keen-slider';
 
 export default function Testimonials() {
-    useEffect(() => {
-        const keenSlider = new KeenSlider('#keen-slider', {
-            loop: true,
-            slides: {
-                origin: 'center',
-                perView: 1.25,
-                spacing: 16,
-            },
-            breakpoints: {
-                '(min-width: 1024px)': {
-                    slides: {
-                        origin: 'auto',
-                        perView: 2.5,
-                        spacing: 32,
-                    },
+  useEffect(() => {
+    const keenSlider = new KeenSlider('keen-slider', {
+        loop: true,
+        slides: {
+            origin: 'center',
+            perView: 1.25,
+            spacing: 16,
+        },
+        breakpoints: {
+            '(min-width: 1024px)': {
+                slides: {
+                    origin: 'auto',
+                    perView: 2.5,
+                    spacing: 32,
                 },
             },
-        }, []);
-
-        const keenSliderPrevious = document.getElementById('keen-slider-previous');
-        const keenSliderNext = document.getElementById('keen-slider-next');
-
-        keenSliderPrevious.addEventListener('click', () => keenSlider.prev());
-        keenSliderNext.addEventListener('click', () => keenSlider.next());
-
-        return () => {
-            // Cleanup event listeners or any other cleanup code if needed
-            keenSlider.destroy();
-        };
+        },
     }, []);
+
+    const keenSliderPrevious = document.getElementById('keen-slider-previous');
+    const keenSliderNext = document.getElementById('keen-slider-next');
+
+    keenSliderPrevious.addEventListener('click', () => keenSlider.prev());
+    keenSliderNext.addEventListener('click', () => keenSlider.next());
+
+    return () => {
+        // Cleanup event listeners or any other cleanup code if needed
+        keenSlider.destroy();
+    };
+}, []);
 
   return (
     <>
@@ -149,12 +149,11 @@ export default function Testimonials() {
               </div>
 
               <div className="mt-4">
-                <p className="text-2xl font-bold text-rose-600 sm:text-3xl">Staying Alive</p>
+                <p className="text-2xl font-bold text-rose-600 sm:text-3xl">Life-Changing Platform</p>
 
                 <p className="mt-4 leading-relaxed text-gray-700">
-                  No, Rose, they are not breathing. And they have no arms or legs … Where are they?
-                  You know what? If we come across somebody with no arms or legs, do we bother
-                  resuscitating them? I mean, what quality of life do we have there?
+                This crowdfunding platform changed my life by helping me raise funds for my innovative project. 
+                The support and engagement from the community were incredible, making my dream a reality.
                 </p>
               </div>
             </div>
@@ -228,18 +227,18 @@ export default function Testimonials() {
               </div>
 
               <div className="mt-4">
-                <p className="text-2xl font-bold text-rose-600 sm:text-3xl">Staying Alive</p>
+                <p className="text-2xl font-bold text-rose-600 sm:text-3xl">Empowering Dreams</p>
 
                 <p className="mt-4 leading-relaxed text-gray-700">
-                  No, Rose, they are not breathing. And they have no arms or legs … Where are they?
-                  You know what? If we come across somebody with no arms or legs, do we bother
-                  resuscitating them? I mean, what quality of life do we have there?
+                Using this crowdfunding website was a game-changer for me. 
+                It empowered me to reach out to a global audience and secure funding for my passion project. 
+                The experience was seamless and rewarding.
                 </p>
               </div>
             </div>
 
             <footer className="mt-4 text-sm font-medium text-gray-700 sm:mt-6">
-              &mdash; Michael Scott
+              &mdash; Jeniffer Grant
             </footer>
           </blockquote>
         </div>
@@ -307,18 +306,17 @@ export default function Testimonials() {
               </div>
 
               <div className="mt-4">
-                <p className="text-2xl font-bold text-rose-600 sm:text-3xl">Staying Alive</p>
+                <p className="text-2xl font-bold text-rose-600 sm:text-3xl">Unmatched Support</p>
 
                 <p className="mt-4 leading-relaxed text-gray-700">
-                  No, Rose, they are not breathing. And they have no arms or legs … Where are they?
-                  You know what? If we come across somebody with no arms or legs, do we bother
-                  resuscitating them? I mean, what quality of life do we have there?
+                I cannot thank this crowdfunding platform enough for the unmatched support I received throughout my campaign. 
+                The team behind it was responsive, helpful, and truly dedicated to helping me succeed.
                 </p>
               </div>
             </div>
 
             <footer className="mt-4 text-sm font-medium text-gray-700 sm:mt-6">
-              &mdash; Michael Scott
+              &mdash; William Smith
             </footer>
           </blockquote>
         </div>

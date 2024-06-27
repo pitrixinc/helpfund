@@ -1,19 +1,104 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useRouter } from 'next/router';
+import KeenSlider from 'keen-slider';
 
 const Team = () => {
   const router = useRouter()
 
-  return (
-<div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
-  
-  <div class="max-w-2xl mx-auto text-center mb-10 lg:mb-14">
-    <h2 class="text-2xl font-bold md:text-4xl md:leading-tight dark:text-white">Our leadership</h2>
-    <p class="mt-1 text-gray-600 dark:text-neutral-400">Building a Strong Crowdfunding Team</p>
-  </div>
+  useEffect(() => {
+    const keenSlider = new KeenSlider('#keen-slider', {
+        loop: true,
+        slides: {
+            origin: 'center',
+            perView: 1.25,
+            spacing: 16,
+        },
+        breakpoints: {
+            '(min-width: 1024px)': {
+                slides: {
+                    origin: 'auto',
+                    perView: 2.5,
+                    spacing: 32,
+                },
+            },
+        },
+    }, []);
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    <div class="flex flex-col rounded-xl p-4 md:p-6 bg-white border border-gray-200 dark:bg-neutral-900 dark:border-neutral-700">
+    const keenSliderPrevious = document.getElementById('keen-slider-previous');
+    const keenSliderNext = document.getElementById('keen-slider-next');
+
+    keenSliderPrevious.addEventListener('click', () => keenSlider.prev());
+    keenSliderNext.addEventListener('click', () => keenSlider.next());
+
+    return () => {
+        // Cleanup event listeners or any other cleanup code if needed
+        keenSlider.destroy();
+    };
+}, []);
+
+
+  return (
+<div className="mx-auto max-w-[1340px] px-4 py-12 sm:px-6 lg:me-0 lg:py-16 lg:pe-0 lg:ps-8 xl:py-24">
+    <div className="max-w-7xl items-end justify-between sm:flex sm:pe-6 lg:pe-8">
+    <div class="">
+      <h2 className="max-w-xl text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+      Our leadership
+      </h2>
+      <p class="mt-1 text-gray-600 dark:text-neutral-400">Building a Strong Crowdfunding Team</p>
+      </div>
+
+      <div className="mt-8 flex gap-4 lg:mt-0">
+        <button
+          aria-label="Previous slide"
+          id="keen-slider-previous"
+          className="rounded-full border border-rose-600 p-3 text-rose-600 transition hover:bg-rose-600 hover:text-white"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="size-5 rtl:rotate-180"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+          </svg>
+        </button>
+
+        <button
+          aria-label="Next slide"
+          id="keen-slider-next"
+          className="rounded-full border border-rose-600 p-3 text-rose-600 transition hover:bg-rose-600 hover:text-white"
+        >
+          <svg
+            className="size-5 rtl:rotate-180"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9 5l7 7-7 7"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+
+
+    <div className="-mx-6 mt-8 lg:col-span-2 lg:mx-0">
+      <div id="keen-slider" className="keen-slider">
+        <div className="keen-slider__slide">
+          <blockquote
+            className="flex h-full flex-col justify-between bg-white p-6 shadow-sm sm:p-8 lg:p-12"
+          >
+            <div>
+              <div>
+              <div className="flex gap-0.5 text-green-500">
       <div class="flex items-center gap-x-4">
         <img class="rounded-full size-20" src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=900&h=900&q=80" alt="Image Description"/>
         <div class="grow">
@@ -26,6 +111,9 @@ const Team = () => {
         </div>
       </div>
 
+      
+      </div>
+      </div>
       <p class="mt-3 text-gray-500 dark:text-neutral-500">
       Experienced leader in crowdfunding projects, skilled in team coordination and project execution.
       </p>
@@ -47,11 +135,22 @@ const Team = () => {
           </svg>
         </a>
       </div>
-    </div>
+              
+            </div>
+          </blockquote>
+        </div>
 
 
-    <div class="flex flex-col rounded-xl p-4 md:p-6 bg-white border border-gray-200 dark:bg-neutral-900 dark:border-neutral-700">
-      <div class="flex items-center gap-x-4">
+
+
+        <div className="keen-slider__slide">
+          <blockquote
+            className="flex h-full flex-col justify-between bg-white p-6 shadow-sm sm:p-8 lg:p-12"
+          >
+            <div>
+              <div>
+              <div className="flex gap-0.5 text-green-500">
+              <div class="flex items-center gap-x-4">
         <img class="rounded-full size-20" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=900&h=900&q=80" alt="Image Description"/>
         <div class="grow">
           <h3 class="font-medium text-gray-800 dark:text-neutral-200">
@@ -63,9 +162,13 @@ const Team = () => {
         </div>
       </div>
 
+      
+      </div>
+      </div>
       <p class="mt-3 text-gray-500 dark:text-neutral-500">
       Creative marketer with a passion for crowdfunding, excels in digital marketing strategies.
       </p>
+
 
       <div class="mt-3 space-x-1">
         <a class="inline-flex justify-center items-center size-8 text-sm font-semibold rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:border-neutral-700 dark:hover:bg-neutral-700" href="#">
@@ -84,11 +187,20 @@ const Team = () => {
           </svg>
         </a>
       </div>
-      
-    </div>
+              
+            </div>
+          </blockquote>
+        </div>
 
-    <div class="flex flex-col rounded-xl p-4 md:p-6 bg-white border border-gray-200 dark:bg-neutral-900 dark:border-neutral-700">
-      <div class="flex items-center gap-x-4">
+
+        <div className="keen-slider__slide">
+          <blockquote
+            className="flex h-full flex-col justify-between bg-white p-6 shadow-sm sm:p-8 lg:p-12"
+          >
+            <div>
+              <div>
+              <div className="flex gap-0.5 text-green-500">
+              <div class="flex items-center gap-x-4">
         <img class="rounded-full size-20" src="https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=900&h=900&q=80" alt="Image Description"/>
         <div class="grow">
           <h3 class="font-medium text-gray-800 dark:text-neutral-200">
@@ -100,9 +212,13 @@ const Team = () => {
         </div>
       </div>
 
+      
+      </div>
+      </div>
       <p class="mt-3 text-gray-500 dark:text-neutral-500">
       Analytical mind with expertise in financial planning and forecasting for crowdfunding campaigns.
       </p>
+
 
       <div class="mt-3 space-x-1">
         <a class="inline-flex justify-center items-center size-8 text-sm font-semibold rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:border-neutral-700 dark:hover:bg-neutral-700" href="#">
@@ -121,11 +237,20 @@ const Team = () => {
           </svg>
         </a>
       </div>
-    </div>
+              
+            </div>
+          </blockquote>
+        </div>
 
-
-    <div class="flex flex-col rounded-xl p-4 md:p-6 bg-white border border-gray-200 dark:bg-neutral-900 dark:border-neutral-700">
-      <div class="flex items-center gap-x-4">
+      
+        <div className="keen-slider__slide">
+          <blockquote
+            className="flex h-full flex-col justify-between bg-white p-6 shadow-sm sm:p-8 lg:p-12"
+          >
+            <div>
+              <div>
+              <div className="flex gap-0.5 text-green-500">
+              <div class="flex items-center gap-x-4">
         <img class="rounded-full size-20" src="https://images.unsplash.com/photo-1579017331263-ef82f0bbc748?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=900&h=900&q=80" alt="Image Description"/>
         <div class="grow">
           <h3 class="font-medium text-gray-800 dark:text-neutral-200">
@@ -137,9 +262,13 @@ const Team = () => {
         </div>
       </div>
 
+      
+      </div>
+      </div>
       <p class="mt-3 text-gray-500 dark:text-neutral-500">
         I am an ambitious workaholic, but apart from that, pretty simple person.
       </p>
+
 
       <div class="mt-3 space-x-1">
         <a class="inline-flex justify-center items-center size-8 text-sm font-semibold rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:border-neutral-700 dark:hover:bg-neutral-700" href="#">
@@ -158,10 +287,20 @@ const Team = () => {
           </svg>
         </a>
       </div>
-    </div>
+              
+            </div>
+          </blockquote>
+        </div>
 
-    <div class="flex flex-col rounded-xl p-4 md:p-6 bg-white border border-gray-200 dark:bg-neutral-900 dark:border-neutral-700">
-      <div class="flex items-center gap-x-4">
+
+        <div className="keen-slider__slide">
+          <blockquote
+            className="flex h-full flex-col justify-between bg-white p-6 shadow-sm sm:p-8 lg:p-12"
+          >
+            <div>
+              <div>
+              <div className="flex gap-0.5 text-green-500">
+              <div class="flex items-center gap-x-4">
         <img class="rounded-full size-20" src="https://images.unsplash.com/photo-1514222709107-a180c68d72b4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=900&h=900&q=80" alt="Image Description"/>
         <div class="grow">
           <h3 class="font-medium text-gray-800 dark:text-neutral-200">
@@ -173,9 +312,13 @@ const Team = () => {
         </div>
       </div>
 
+      
+      </div>
+      </div>
       <p class="mt-3 text-gray-500 dark:text-neutral-500">
       Customer-centric professional ensuring excellent supporter experience throughout the crowdfunding journey.
       </p>
+
 
       <div class="mt-3 space-x-1">
         <a class="inline-flex justify-center items-center size-8 text-sm font-semibold rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:border-neutral-700 dark:hover:bg-neutral-700" href="#">
@@ -194,9 +337,22 @@ const Team = () => {
           </svg>
         </a>
       </div>
-    </div>
+              
+            </div>
+          </blockquote>
+        </div>
 
-    <div onClick={() => router.push(`/signin`)} class="col-span-full lg:col-span-1 group flex flex-col justify-center text-center rounded-xl p-4 md:p-6 border border-dashed border-gray-200 hover:shadow-sm dark:border-neutral-700" >
+
+        <div className="keen-slider__slide">
+          <blockquote
+            className="flex h-full flex-col justify-between bg-white p-6 shadow-sm sm:p-8 lg:p-12"
+          >
+            <div>
+              <div>
+              <div className="flex gap-0.5 text-green-500">
+              
+
+              <div onClick={() => router.push(`/signin`)} class="col-span-full lg:col-span-1 group flex flex-col justify-center text-center rounded-xl p-4 md:p-6 border border-dashed border-gray-200 hover:shadow-sm dark:border-neutral-700" >
       <h3 class="text-lg text-gray-800 dark:text-neutral-200">
         We are hiring!
       </h3>
@@ -205,8 +361,19 @@ const Team = () => {
           See all opening positions
           <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
         </span>
+</div>
+</div>
+      
       </div>
-    </div>
+      </div>
+      
+              
+            </div>
+          </blockquote>
+        </div>
+      
+</div>
+    
   </div>
 </div>
   )
