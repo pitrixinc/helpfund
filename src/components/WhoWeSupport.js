@@ -1,25 +1,26 @@
 import React from 'react'
+import { useRouter } from 'next/router';
 
 const WhoWeSupport = () => {
+  const router = useRouter()
+
   return (
     <section>
   <div className="max-w-screen-full px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
     <div className="grid grid-cols-1 gap-y-8 lg:grid-cols-2 lg:items-center lg:gap-x-16">
       <div className="mx-auto max-w-lg text-center lg:mx-0 ltr:lg:text-left rtl:lg:text-right">
-        <h2 className="text-3xl font-bold sm:text-4xl">Find your career path</h2>
+        <h2 className="text-3xl font-bold sm:text-4xl">Empower Your Career</h2>
 
         <p className="mt-4 text-gray-600">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut vero aliquid sint distinctio
-          iure ipsum cupiditate? Quis, odit assumenda? Deleniti quasi inventore, libero reiciendis
-          minima aliquid tempora. Obcaecati, autem.
+          Empower Dreams, Fund Futures! Join our crowdfunding platform to support job seekers&apos; aspirations. Apply for funding today and make a difference in someone&apos;s career journey.
         </p>
 
-        <a
-          href="#"
-          className="mt-8 inline-block rounded bg-indigo-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-yellow-400"
+        <div
+          onClick={() => router.push(`/signin`)}
+          className="mt-8 inline-block rounded bg-rose-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-yellow-400"
         >
           Get Started Today
-        </a>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
@@ -48,10 +49,10 @@ const WhoWeSupport = () => {
             </svg>
           </span>
 
-          <h2 className="mt-2 font-bold">Accountant</h2>
+          <h2 className="mt-2 font-bold">Entrepreneurs</h2>
 
           <p className="hidden sm:mt-1 sm:block sm:text-sm sm:text-gray-600">
-            Lorem ipsum dolor sit amet consectetur.
+          Business funding for startup success.
           </p>
         </a>
 
@@ -80,10 +81,10 @@ const WhoWeSupport = () => {
             </svg>
           </span>
 
-          <h2 className="mt-2 font-bold">Accountant</h2>
+          <h2 className="mt-2 font-bold">Teachers</h2>
 
           <p className="hidden sm:mt-1 sm:block sm:text-sm sm:text-gray-600">
-            Lorem ipsum dolor sit amet consectetur.
+            Grants for innovative educational projects.
           </p>
         </a>
 
@@ -112,10 +113,10 @@ const WhoWeSupport = () => {
             </svg>
           </span>
 
-          <h2 className="mt-2 font-bold">Accountant</h2>
+          <h2 className="mt-2 font-bold">Artists</h2>
 
           <p className="hidden sm:mt-1 sm:block sm:text-sm sm:text-gray-600">
-            Lorem ipsum dolor sit amet consectetur.
+          Sponsorship for creative endeavors.
           </p>
         </a>
 
@@ -144,10 +145,10 @@ const WhoWeSupport = () => {
             </svg>
           </span>
 
-          <h2 className="mt-2 font-bold">Accountant</h2>
+          <h2 className="mt-2 font-bold">Scientists</h2>
 
           <p className="hidden sm:mt-1 sm:block sm:text-sm sm:text-gray-600">
-            Lorem ipsum dolor sit amet consectetur.
+          Research grants for groundbreaking discoveries.
           </p>
         </a>
 
@@ -176,10 +177,10 @@ const WhoWeSupport = () => {
             </svg>
           </span>
 
-          <h2 className="mt-2 font-bold">Accountant</h2>
+          <h2 className="mt-2 font-bold">Nurses</h2>
 
           <p className="hidden sm:mt-1 sm:block sm:text-sm sm:text-gray-600">
-            Lorem ipsum dolor sit amet consectetur.
+          Scholarships for advanced medical education.
           </p>
         </a>
 
@@ -208,10 +209,10 @@ const WhoWeSupport = () => {
             </svg>
           </span>
 
-          <h2 className="mt-2 font-bold">Accountant</h2>
+          <h2 className="mt-2 font-bold">Engineers</h2>
 
           <p className="hidden sm:mt-1 sm:block sm:text-sm sm:text-gray-600">
-            Lorem ipsum dolor sit amet consectetur.
+          Funding for technological innovations.
           </p>
         </a>
       </div>

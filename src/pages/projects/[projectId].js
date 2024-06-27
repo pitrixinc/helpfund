@@ -441,7 +441,7 @@ const handlePayment = async (e) => {
           <div className="bg-gray-200 mt-4">
             <div className="bg-white p-5 text-sm border rounded-lg">
               <button className="items-center text-rose-500 justify-center font-semibold w-full p-2 bg-white border border-rose-500 hover:bg-green-100 hover:border-green-600">
-                Post Ad Like This
+                Post Campaign Like This
               </button>
             </div>
           </div>

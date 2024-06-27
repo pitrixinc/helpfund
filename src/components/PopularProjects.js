@@ -5,7 +5,7 @@ const PopularProjects = () => {
   const router = useRouter()
 
   return (
-<div class="max-w-6xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
+<div class="max-w-6xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto hidden md:block">
  
   <div class="grid sm:grid-cols-12 gap-6">
    

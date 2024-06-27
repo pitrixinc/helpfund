@@ -74,7 +74,7 @@ const FeaturedProjects = ({ filters, sortOption }) => {
     <p class="mt-1 text-gray-600 dark:text-neutral-400">Creative people</p>
   </div>
      
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-1 md:gap-6 lg:gap-6 xl:gap-6 mb-20">
        
       {currentProjects.map(project => (
 <div key={project.id} onClick={() => router.push(`/projects/${project.id}`)} class="cursor-pointer group flex flex-col h-full bg-white border border-gray-200 shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
