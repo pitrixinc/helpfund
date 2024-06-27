@@ -11,9 +11,9 @@ const Categories = () => {
     <p class="mt-1 text-gray-600 dark:text-neutral-400">Creative people</p>
   </div>
  
-  <div class="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6" onClick={() => router.push(`/projects`)}>
+  <div class="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6" >
     
-    <a class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800" href="#">
+    <div onClick={() => router.push(`/projects`)} class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800" >
       <div class="p-4 md:p-5">
         <div class="flex justify-between items-center">
           <div>
@@ -29,9 +29,9 @@ const Categories = () => {
           </div>
         </div>
       </div>
-    </a>
+    </div>
 
-    <a class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800" href="#">
+    <div onClick={() => router.push(`/projects`)} class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800">
       <div class="p-4 md:p-5">
         <div class="flex justify-between items-center">
           <div>
@@ -47,9 +47,9 @@ const Categories = () => {
           </div>
         </div>
       </div>
-    </a>
+    </div>
    
-    <a class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800" href="#">
+    <div onClick={() => router.push(`/projects`)} class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800">
       <div class="p-4 md:p-5">
         <div class="flex justify-between items-center">
           <div>
@@ -65,9 +65,9 @@ const Categories = () => {
           </div>
         </div>
       </div>
-    </a>
+    </div>
     
-    <a class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800" href="#">
+    <div onClick={() => router.push(`/projects`)} class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800">
       <div class="p-4 md:p-5">
         <div class="flex justify-between items-center">
           <div>
@@ -83,9 +83,9 @@ const Categories = () => {
           </div>
         </div>
       </div>
-    </a>
+    </div>
     
-    <a class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800" href="#">
+    <div onClick={() => router.push(`/projects`)} class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800">
       <div class="p-4 md:p-5">
         <div class="flex justify-between items-center">
           <div>
@@ -101,9 +101,9 @@ const Categories = () => {
           </div>
         </div>
       </div>
-    </a>
+    </div>
   
-    <a class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800" href="#">
+    <div onClick={() => router.push(`/projects`)} class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800">
       <div class="p-4 md:p-5">
         <div class="flex justify-between items-center">
           <div>
@@ -119,9 +119,9 @@ const Categories = () => {
           </div>
         </div>
       </div>
-    </a>
+    </div>
 
-    <a class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800" href="#">
+    <div onClick={() => router.push(`/projects`)} class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800">
       <div class="p-4 md:p-5">
         <div class="flex justify-between items-center">
           <div>
@@ -137,9 +137,9 @@ const Categories = () => {
           </div>
         </div>
       </div>
-    </a>
+    </div>
   
-    <a class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800" href="#">
+    <div onClick={() => router.push(`/projects`)} class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-neutral-900 dark:border-neutral-800">
       <div class="p-4 md:p-5">
         <div class="flex justify-between items-center">
           <div>
@@ -155,7 +155,7 @@ const Categories = () => {
           </div>
         </div>
       </div>
-    </a>
+    </div>
   </div>
 </div>
   )
