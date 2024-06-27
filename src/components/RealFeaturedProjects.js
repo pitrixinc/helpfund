@@ -3,12 +3,12 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase.config';
 import { useRouter } from 'next/router';
 
-const FeaturedProjects = ({ filters, sortOption }) => {
+const RealFeaturedProjects = ({ filters, sortOption }) => {
   const router = useRouter()
   const [projects, setProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(6);
+  const [itemsPerPage] = useState(9);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -66,17 +66,21 @@ const FeaturedProjects = ({ filters, sortOption }) => {
     return str;
   };
 
-  return (
-    <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
 
-<div class="max-w-2xl mx-auto text-center mb-10 lg:mb-14">
-    <h2 class="text-2xl font-bold md:text-4xl md:leading-tight dark:text-white">Featured Projects</h2>
-    <p class="mt-1 text-gray-600 dark:text-neutral-400">Creative people</p>
-  </div>
-     
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  return (
+    <div class="max-w-[85rem] px-0 sm:pb-10 md:py-1 md:px-8 lg:px-8 lg:py-1 md:mx-auto lg:mx-auto">
        
-      {currentProjects.map(project => (
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-1 md:gap-6 lg:gap-6 xl:gap-6 mb-20">
+{/* 
+      {filteredProjects.map(project => (
+        <div key={project.id} className="bg-white p-4 rounded shadow">
+          <h2 className="text-lg font-bold">{project.title}</h2>
+          <p>{project.description}</p>
+          
+        </div>
+      ))}
+      */}
+ {currentProjects.map(project => (
 <div key={project.id} onClick={() => router.push(`/projects/${project.id}`)} class="cursor-pointer group flex flex-col h-full bg-white border border-gray-200 shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
           <div class="h-48 flex flex-col justify-center items-center bg-[url('https://preline.co/assets/svg/examples/abstract-bg-1.svg')] bg-no-repeat bg-cover bg-center rounded-t-xl">
             <img src={project.image} alt="project image" className='w-full h-48 rounded-md' />
@@ -103,7 +107,6 @@ const FeaturedProjects = ({ filters, sortOption }) => {
         </div>
         ))} 
     </div>
-    {/** 
     <div className="flex justify-between mt-4 mb-4">
         {currentPage > 1 && (
           <button
@@ -122,9 +125,22 @@ const FeaturedProjects = ({ filters, sortOption }) => {
           </button>
         )}
       </div>
-      */}
     </div>
-  )
-}
+  );
+};
 
-export default FeaturedProjects
+// Helper function to get goal range values
+const getGoalRange = (range) => {
+  switch (range) {
+    case 'low':
+      return [0, 1000];
+    case 'mid':
+      return [1000, 10000];
+    case 'high':
+      return [10000, Infinity];
+    default:
+      return [0, Infinity];
+  }
+};
+
+export default RealFeaturedProjects;

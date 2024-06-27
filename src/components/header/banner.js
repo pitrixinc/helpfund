@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 
 const images = [
-  '/images/image1.webp',
-  '/images/image2.webp',
-  '/images/image3.png',
-  '/images/image4.webp',
+  '/images/image5.jpg',
+  '/images/image6.jpg',
+  '/images/image7.jpg',
+  '/images/image8.jpg',
 ]
 
 const Banner = () => {
