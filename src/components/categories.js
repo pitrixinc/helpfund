@@ -21,7 +21,7 @@ const Categories = () => {
               Technology
             </h3>
             <p class="text-sm text-gray-500 dark:text-neutral-500">
-              4 job positions
+              4 campaigns
             </p>
           </div>
           <div class="ps-3">
@@ -39,7 +39,7 @@ const Categories = () => {
               Art
             </h3>
             <p class="text-sm text-gray-500 dark:text-neutral-500">
-              26 job positions
+              26 campaigns
             </p>
           </div>
           <div class="ps-3">
@@ -57,7 +57,7 @@ const Categories = () => {
               Music
             </h3>
             <p class="text-sm text-gray-500 dark:text-neutral-500">
-              9 job positions
+              9 campaigns
             </p>
           </div>
           <div class="ps-3">
@@ -75,7 +75,7 @@ const Categories = () => {
               Charity Home
             </h3>
             <p class="text-sm text-gray-500 dark:text-neutral-500">
-              11 job positions
+              11 campaigns
             </p>
           </div>
           <div class="ps-3">
@@ -93,7 +93,7 @@ const Categories = () => {
               Windows Foundation
             </h3>
             <p class="text-sm text-gray-500 dark:text-neutral-500">
-              37 job positions
+              37 campaigns
             </p>
           </div>
           <div class="ps-3">
@@ -111,7 +111,7 @@ const Categories = () => {
               Hospital Medical Support
             </h3>
             <p class="text-sm text-gray-500 dark:text-neutral-500">
-              2 job positions
+              2 campaigns
             </p>
           </div>
           <div class="ps-3">
@@ -129,7 +129,7 @@ const Categories = () => {
               Student Fees Support
             </h3>
             <p class="text-sm text-gray-500 dark:text-neutral-500">
-              10 job positions
+              10 campaigns
             </p>
           </div>
           <div class="ps-3">
@@ -147,7 +147,7 @@ const Categories = () => {
               Education
             </h3>
             <p class="text-sm text-gray-500 dark:text-neutral-500">
-              14 job positions
+              14 campaigns
             </p>
           </div>
           <div class="ps-3">

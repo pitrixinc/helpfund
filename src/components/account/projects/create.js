@@ -149,6 +149,7 @@ const Create = () => {
             addedBy: userDetails.uid,
             addedByImage: userDetails.photoURL,
             displayName: userDetails.displayName,
+            currency: userDetails.currency,
             createdAt: new Date().toISOString()
           };
       

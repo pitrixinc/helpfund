@@ -351,7 +351,7 @@ const handlePayment = async (e) => {
         <div className="lg:w-[30%]  lg:inline">
           <div className="bg-gray-200">
             <div className="bg-white p-5 text-sm border-double border rounded-lg">
-              <div className="font-bold text-lg text-black">{userData?.currency}{project.goal} {project.isVerified && (
+              <div className="font-bold text-lg text-black">{project?.currency}{project.goal} {project.isVerified && (
                 <span className="text-rose-600">Negotiable</span>
               )}</div>
               <div className="text-center flex my-4 font-semibold">
@@ -359,7 +359,7 @@ const handlePayment = async (e) => {
             
               </div>
               <button className="items-center text-rose-500 justify-center w-full p-2 font-semibold bg-white border border-rose-500 hover:bg-green-100 hover:border-green-600">
-              {userData?.currency}{totalDonations} donated, {userData?.currency}{amountLeft} left
+              {project?.currency}{totalDonations} donated, {project?.currency}{amountLeft} left
               </button>
             </div>
           </div>
@@ -382,7 +382,7 @@ const handlePayment = async (e) => {
                 onClick={handlePayment}
                 disabled={loading}
               >
-                {loading ? 'Processing...' : `Proceed By Donating ${userData?.currency}` + amount}
+                {loading ? 'Processing...' : `Proceed By Donating ${project?.currency}` + amount}
               </button>
               {errorMessage && <p className="text-red-600 text-center font-semibold">{errorMessage}</p>}
               </>
