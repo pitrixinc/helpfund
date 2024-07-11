@@ -6,6 +6,7 @@ import { collection, addDoc, getDoc, doc, updateDoc } from 'firebase/firestore';
 import {db,storage} from '../../../firebase.config';
 import { AiOutlineArrowLeft, AiOutlineVideoCameraAdd, AiOutlineClose } from 'react-icons/ai';
 import { toast } from 'react-toastify';
+import VerifyAccount from '../VerifyAccount';
 
 const Create = () => {
 
@@ -44,23 +45,16 @@ const Create = () => {
                 setUserDetails(userData);
                 console.log('User Details:', userData);
       
-              // Check user type and redirect accordingly
-              if (!userData.isCreator  && userData.isMiniAdmin) {
-                // User is not a creator or donor but is a mini admin, redirect to /dashboard
-                router.push(`/dashboard/${id}/dashboard`);
-            } else if (!userData.isCreator && userData.isSuperAdmin) {
-                // User is not a customer but is a super admin, redirect to /my-admin
-                router.push(`/my-admin/${id}/dashboard`);
-            }// Check user type and redirect accordingly
-           else if (!userData.isDonor  && userData.isMiniAdmin) {
-                // User is not a creator or donor but is a mini admin, redirect to /dashboard
-                router.push(`/dashboard/${id}/dashboard`);
-            } else if (!userData.isDonor && userData.isSuperAdmin) {
-                // User is not a customer but is a super admin, redirect to /my-admin
-                router.push(`/my-admin/${id}/dashboard`);
-            } else {
-                // User is a customer or user type not recognized, continue rendering the page
-            }
+               // Check user type and redirect accordingly
+                if (!userData.isCreator || !userData.isDonor && userData.isMiniAdmin) {
+                    // User is not a creator or donor but is a mini admin, redirect to /dashboard
+                    router.push(`/dashboard/${id}/dashboard`);
+                } else if (!userData.isCustomer && userData.isSuperAdmin) {
+                    // User is not a customer but is a super admin, redirect to /my-admin
+                    router.push(`/my-admin/${id}/dashboard`);
+                } else {
+                    // User is a customer or user type not recognized, continue rendering the page
+                }
               } else {
                 console.log('User not found');
                 router.push('/signin');
@@ -186,6 +180,7 @@ const Create = () => {
       
   return (
 <div class="max-w-4xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
+{userDetails?.isVerified ? (<>
   <form onSubmit={addProject}>
     <div class="bg-white rounded-xl shadow dark:bg-neutral-900">
       <div class="relative h-40 rounded-t-xl bg-[url('https://preline.co/assets/svg/examples/abstract-bg-1.svg')] bg-no-repeat bg-cover bg-center">
@@ -390,7 +385,9 @@ const Create = () => {
               Funding Goal
             </label>
 
-            <input id="af-submit-app-project-name"  value={goal} onChange={(e) => setGoal(e.target.value)} required type="number" class="py-2 px-3 pe-11 block w-full border-gray-200 shadow-sm rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" placeholder="The total amount of money needed to complete the project."/>
+            <input id="af-submit-app-project-name"  value={goal} onChange={(e) => setGoal(e.target.value)} required type="number" 
+            class="py-2 px-3 pe-11 block w-full border-gray-200 shadow-sm rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+             placeholder="The total amount of money needed to complete the project."/>
           </div>
 
           <div class="space-y-2">
@@ -462,15 +459,25 @@ const Create = () => {
 
 
         </div>
-
+        {loading ? (
+          <div class="mt-5 flex justify-center gap-x-2">
+          <button type="submit" class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-green-600 text-white hover:bg-blue-700 disabled:opacity-50 pointer-events-none cursor-not-allowed">
+            Submiting...
+          </button>
+        </div>
+        ) : (
         <div class="mt-5 flex justify-center gap-x-2">
           <button type="submit" class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
             Submit your project
           </button>
         </div>
+        )}
       </div>
     </div>
   </form>
+  </>) : (
+    <VerifyAccount/>
+  )}
 </div>
   )
 }

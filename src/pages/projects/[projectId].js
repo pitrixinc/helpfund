@@ -351,7 +351,7 @@ const handlePayment = async (e) => {
         <div className="lg:w-[30%]  lg:inline">
           <div className="bg-gray-200">
             <div className="bg-white p-5 text-sm border-double border rounded-lg">
-              <div className="font-bold text-lg text-black">GHS {project.goal} {project.isVerified && (
+              <div className="font-bold text-lg text-black">{userData?.currency}{project.goal} {project.isVerified && (
                 <span className="text-rose-600">Negotiable</span>
               )}</div>
               <div className="text-center flex my-4 font-semibold">
@@ -359,7 +359,7 @@ const handlePayment = async (e) => {
             
               </div>
               <button className="items-center text-rose-500 justify-center w-full p-2 font-semibold bg-white border border-rose-500 hover:bg-green-100 hover:border-green-600">
-              ${totalDonations} donated, ${amountLeft} left
+              {userData?.currency}{totalDonations} donated, {userData?.currency}{amountLeft} left
               </button>
             </div>
           </div>
@@ -375,14 +375,14 @@ const handlePayment = async (e) => {
               </div>
               {totalDonations < project.goal ? (
                 <>
-                  <input type="number" placeholder="Enter Donation Amount (GHS)" value={amount} onChange={(e) => setAmount(e.target.value)} required
+                  <input type="number" placeholder='Enter Donation Amount - Only numbers, no space or special character' value={amount} onChange={(e) => setAmount(e.target.value)} required
                    class="py-2 mb-1 px-3 pe-11 block w-full border-gray-200 shadow-sm rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" />
               <button
                 className="items-center bg-rose-500 justify-center w-full p-2 text-white border border-rose-500 hover:bg-green-100 hover:text-green-500 hover:border-green-600 mb-4"
                 onClick={handlePayment}
                 disabled={loading}
               >
-                {loading ? 'Processing...' : 'Proceed By Donating GHS' + amount}
+                {loading ? 'Processing...' : `Proceed By Donating ${userData?.currency}` + amount}
               </button>
               {errorMessage && <p className="text-red-600 text-center font-semibold">{errorMessage}</p>}
               </>

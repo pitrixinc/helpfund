@@ -3,6 +3,7 @@ import { collection, getDocs, query, where, doc, getDoc } from 'firebase/firesto
 import { db } from '../../firebase.config'; // Firebase configuration
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
+import VerifyAccount from './VerifyAccount';
 
 const Dashboard = () => {
   const router = useRouter();
@@ -112,6 +113,8 @@ const Dashboard = () => {
 
   return (
     <section>
+      {userDetails?.isVerified ? (
+        <>
       <div className="mx-auto max-w-screen-2xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div className="bg-blue-600 p-8 md:p-12 lg:px-16 lg:py-24">
@@ -130,7 +133,7 @@ const Dashboard = () => {
                   href="#"
                   className="inline-block rounded border border-white bg-white px-12 py-3 text-sm font-semibold text-xl text-blue-500 transition hover:bg-transparent hover:text-white focus:outline-none focus:ring focus:ring-yellow-400"
                 >
-                  ${totalDonations.toFixed(2)}
+                  {userDetails?.currency}{totalDonations.toFixed(2)}
                 </a>
               </div>
             </div>
@@ -167,7 +170,7 @@ const Dashboard = () => {
                     </div>
                     <h4 className="text-lg font-semibold mb-2">{truncateString(project.title, 15)}</h4>
                     <p className="text-gray-600 mb-2">{truncateString(project.category, 15)}</p>
-                    <p className="text-gray-800 font-semibold">Goal: ${project.goal}</p>
+                    <p className="text-gray-800 font-semibold">Goal: {userDetails?.currency} {project.goal}</p>
                     <p className="text-gray-800 font-semibold">Donations: ${project.totalDonations.toFixed(2)}</p>
                     <p className="text-gray-600">{project.deadline} left</p>
                     <p className={`mt-2 ${project.status === 'Approved' ? 'text-green-600' : project.status === 'Pending' ? 'text-yellow-600' : 'text-rose-600'}`}>{project.status}</p>
@@ -180,7 +183,7 @@ const Dashboard = () => {
                         <img src={donation.projectImage} alt="project image" className='w-full h-38 rounded-md' />
                     </div>
                     <h4 className="text-lg font-semibold mb-2">Project: {donation.projectTitle}</h4>
-                    <p className="text-gray-800 font-semibold">Amount: ${donation.amount.toFixed(2)}</p>
+                    <p className="text-gray-800 font-semibold">Amount: {userDetails?.currency}{donation.amount.toFixed(2)}</p>
                     <p className="text-gray-600">Donated on: {new Date(donation.timestamp).toLocaleDateString()}</p>
                   </div>
                 ))
@@ -189,6 +192,12 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      </>
+      ) : (
+        <div>
+          <VerifyAccount/>
+        </div>
+      )}
     </section>
   );
 };

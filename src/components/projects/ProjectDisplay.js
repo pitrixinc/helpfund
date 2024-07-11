@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../firebase.config';
+import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
+import { db, auth } from '../../firebase.config';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import DefaultProjectDisplay from './DefaultProjectDisplay';
 import { useRouter } from 'next/router';
 
-const ProjectDisplay = ({ filters, sortOption }) => {
+
+const ProjectDisplay = ({ filters, sortOption,  }) => {
   const router = useRouter()
   const [projects, setProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
@@ -112,6 +114,32 @@ const ProjectDisplay = ({ filters, sortOption }) => {
   };
 
 
+  const [currentUser, setCurrentUser] = useState(null);
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const auth = getAuth();
+
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setCurrentUser(user);
+
+        const userDocRef = doc(db, 'users', user.uid);
+        const userDocSnapshot = await getDoc(userDocRef);
+        if (userDocSnapshot.exists()) {
+          const userData = userDocSnapshot.data();
+          setUserData(userData);
+        //  console.log("User data", userData)
+        }
+      } else {
+        setCurrentUser(null);
+        setUserData(null);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   return (
     <div class="max-w-[85rem] px-0 sm:pb-10 md:py-1 md:px-8 lg:px-8 lg:py-1 md:mx-auto lg:mx-auto">
 
@@ -160,7 +188,7 @@ const ProjectDisplay = ({ filters, sortOption }) => {
             {truncateString(project.location, 6)}
             </a>
             <a class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-ee-xl bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800" href="#">
-              ${project.goal}
+            {userData?.currency}{project.goal}
             </a>
           </div>
         </div>

@@ -12,7 +12,7 @@ export default function Favorites() {
     <Layout
       className={` ${inter.className}`}
       >
-     <div className="className='sm:ml-[81px] xl:ml-[340px] w-[100%] md:w-[70%] lg:w-[70%] xl:w-[75%] h-screen min-h-screen  text-[#16181C] overflow-y-auto no-scrollbar'">
+     <div className="m:ml-[81px] xl:ml-[340px] w-[100%] md:w-[70%] lg:w-[70%] xl:w-[75%] h-screen min-h-screen  text-[#16181C] overflow-y-auto no-scrollbar">
         <DonationFavorite/>
         
       </div>

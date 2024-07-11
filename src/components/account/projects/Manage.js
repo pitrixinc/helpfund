@@ -1,12 +1,13 @@
 import React from 'react'
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { collection, getDocs, doc, deleteDoc, where, query } from 'firebase/firestore';
+import { collection, getDocs, doc, deleteDoc, where, query, getDoc } from 'firebase/firestore';
 import { db } from '../../../firebase.config';
 import ProjectModal from './ProjectModal';
 import ProjectDeleteModal from './ProjectDeleteModal'
 import DonatorListModal from './DonatorListModal';
 import { toast } from 'react-toastify';
+import VerifyAccount from '../VerifyAccount';
 
 const Manage = () => {
     const router = useRouter();
@@ -22,6 +23,47 @@ const Manage = () => {
     const [currentDonators, setCurrentDonators] = useState([]);
     const projectsPerPage = 9;
     const [donationStats, setDonationStats] = useState({});
+    const [userDetails, setUserDetails] = useState(null);
+
+
+    useEffect(() => {
+      const fetchUserData = async () => {
+        if (id) {
+          try {
+            const userDocRef = doc(db, 'users', id);
+            const userDocSnapshot = await getDoc(userDocRef);
+    
+            if (userDocSnapshot.exists()) {
+              const userData = userDocSnapshot.data();
+              setUserDetails(userData);
+              console.log('User Details:', userData);
+    
+             // Check user type and redirect accordingly
+              if (!userData.isCreator || !userData.isDonor && userData.isMiniAdmin) {
+                  // User is not a creator or donor but is a mini admin, redirect to /dashboard
+                  router.push(`/dashboard/${id}/dashboard`);
+              } else if (!userData.isCustomer && userData.isSuperAdmin) {
+                  // User is not a customer but is a super admin, redirect to /my-admin
+                  router.push(`/my-admin/${id}/dashboard`);
+              } else {
+                  // User is a customer or user type not recognized, continue rendering the page
+              }
+            } else {
+              console.log('User not found');
+              router.push('/signin');
+            }
+          } catch (error) {
+            console.error('Error fetching user data', error);
+          }
+        }
+      };
+    
+      console.log('UID:', id); // Log UID to check if it's defined
+    
+      fetchUserData();
+    }, [id, router]);
+
+
   
     useEffect(() => {
       const fetchProjects = async () => {
@@ -165,6 +207,7 @@ const Manage = () => {
 
   return (
     <section class="container px-4 mx-auto">
+      {userDetails?.isVerified ? (<>
     <div class="sm:flex sm:items-center sm:justify-between">
         <div>
             <div class="flex items-center gap-x-3">
@@ -287,8 +330,8 @@ const Manage = () => {
                             <tr key={project.id} onClick={() => openModal(project)} className="cursor-pointer">
                                 <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                     <div>
-                                        <h2 class="font-medium text-gray-800 dark:text-white ">{project.title.slice(0,6)}...</h2>
-                                        <p class="text-sm font-normal text-gray-600 dark:text-gray-400">${project.goal}</p>
+                                        <h2 class="font-medium text-gray-800 dark:text-white ">{project.title.slice(0,8)}...</h2>
+                                        <p class="text-sm font-normal text-gray-600 dark:text-gray-400">{userDetails?.currency}{project.goal}</p>
                                     </div>
                                 </td>
                                 <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
@@ -360,10 +403,10 @@ const Manage = () => {
                                     ></div>
                                 </div>
                                 <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                    {donationStats[project.id].totalAmountDonated} / {project.goal} ({((donationStats[project.id].totalAmountDonated / project.goal) * 100).toFixed(2)}%)
+                                {userDetails?.currency}{donationStats[project.id].totalAmountDonated} / {userDetails?.currency}{project.goal} ({((donationStats[project.id].totalAmountDonated / project.goal) * 100).toFixed(2)}%)
                                 </p>
                                 <p className="mt-1 text-xs text-red-500 dark:text-red-400">
-                                    ${project.goal - donationStats[project.id].totalAmountDonated} left to reach goal
+                                {userDetails?.currency}{project.goal - donationStats[project.id].totalAmountDonated} left to reach goal
                                 </p>
                             </div>
                         )}
@@ -442,7 +485,9 @@ const Manage = () => {
         donators={currentDonators}
     />
  
-
+</>) : (
+  <VerifyAccount/>
+)}
 
 </section>
   )

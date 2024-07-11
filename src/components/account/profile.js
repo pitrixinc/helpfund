@@ -5,6 +5,7 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
+import VerifyAccount from './VerifyAccount';
 
 const Profile = () => {
   const [email, setEmail] = useState('');
@@ -93,6 +94,7 @@ const Profile = () => {
 
   return (
 <div class="max-w-4xl px-4 py-10 sm:px-6 lg:px-8 mx-auto">
+{userDetails?.isVerified ? (<>
   <div class="bg-white rounded-xl shadow p-4 sm:p-7 dark:bg-neutral-800">
     <div class="mb-8">
       <h2 class="text-xl font-bold text-gray-800 dark:text-neutral-200">
@@ -327,6 +329,9 @@ const Profile = () => {
       </div>
     </form>
   </div>
+  </>) : (
+    <VerifyAccount/>
+  )}
 </div>
   )
 }

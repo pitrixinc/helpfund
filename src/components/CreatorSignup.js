@@ -23,6 +23,7 @@ const SignupCreator = () => {
   const [loading, setLoading] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedImage, setSelectedImage] = useState(null); // New state for the selected image
+  const [category, setCategory] = useState('');
 
 
    
@@ -108,6 +109,8 @@ const SignupCreator = () => {
         isMiniAdmin: false,
         isDonor: false,
         isCreator: true,
+        category: category,
+        isVerified: false,
         referralCode: referralCode,
         createdAt: new Date().toISOString(),
         isSubscribed: true,
@@ -411,6 +414,45 @@ const SignupCreator = () => {
               outline: 'none',
             }}
           />
+           <div class="space-y-2">
+            <label for="af-submit-app-category" class="inline-block text-sm font-medium text-gray-500 mt-2.5 dark:text-neutral-200">
+              Choose Your Preferred Campaign
+            </label>
+<select id="af-submit-app-category" value={category} onChange={(e) => setCategory(e.target.value)} required class="py-2 px-3 pe-9 block w-full border-gray-200 shadow-sm rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+              <option selected>Select a campaign</option>
+              <option value="Technology">Technology</option>
+              <option value="Art">Art</option>
+              <option value="Music">Music</option>
+              <option value="Film & Video">Film & Video</option>
+              <option value="Games">Games</option>
+              <option value="Design">Design</option>
+              <option value="Food & Beverage">Food & Beverage</option>
+              <option value="Publishing">Publishing</option>
+              <option value="Community & Social Causes">Community & Social Causes</option>
+              <option value="Health & Wellness">Health & Wellness</option>
+              <option value="Education">Education</option>
+              <option value="Travel & Adventure">Travel & Adventure</option>
+              <option value="Crafts & DIY">Crafts & DIY</option>
+              <option value="Fashion & Accessories">Fashion & Accessories</option>
+              <option value="Sports & Recreation">Sports & Recreation</option>
+              <option value="Photography">Photography</option>
+              <option value="Dance">Dance</option>
+              <option value="Theater">Theater</option>
+              <option value="Writing & Journalism">Writing & Journalism</option>
+              <option value="Comics">Comics</option>
+              <option value="Podcasts, Blogs & Vlogs">Podcasts, Blogs & Vlogs</option>
+              <option value="Home & Garden">Home & Garden</option>
+              <option value="Pets & Animals">Pets & Animals</option>
+              <option value="Toys & Hobbies">Toys & Hobbies</option>
+              <option value="Collectibles">Collectibles</option>
+              <option value="Cars & Motorcycles">Cars & Motorcycles</option>
+              <option value="Technology Accessories">Technology Accessories</option>
+              <option value="Jewelry">Jewelry</option>
+              <option value="Beauty & Cosmetics">Beauty & Cosmetics</option>
+              <option value="Other">Other</option>
+            </select>
+            </div>
+
           <select style={{
               width: '100%',
               margin: '10px 0',
@@ -425,13 +467,7 @@ const SignupCreator = () => {
             onChange={e=> setCurrency(e.target.value)}
             required>
             <option disabled>Select Currency</option>
-            <option value="$">$</option>
-            <option value="€">€</option>
-            <option value="₹">₹</option>
-            <option value="¥">¥</option>
-            <option value="₵">₵</option>
-            <option value="£">£</option>
-            <option value="₦">₦</option>
+            <option value="GH₵">GH₵</option>
           </select>
           
            {/* Image Upload */}
@@ -458,6 +494,8 @@ const SignupCreator = () => {
             )}
             </div>
           {/* End of Additional Fields */}
+          <div><p className='text-gray-500 font-normal'>You are required to pay GHS16 in order to enroll in HelpFund creator programme, 
+            You may be required to submit additional information about yourself or business in order to verify your account and be eligible to create campaigns.</p></div>
           <button
             type="submit" disabled={loading}
             style={{
