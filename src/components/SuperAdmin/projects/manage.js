@@ -288,7 +288,7 @@ const Manage = () => {
                                 <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                     <div>
                                         <h2 class="font-medium text-gray-800 dark:text-white ">{project.title.slice(0,6)}...</h2>
-                                        <p class="text-sm font-normal text-gray-600 dark:text-gray-400">${project.goal}</p>
+                                        <p class="text-sm font-normal text-gray-600 dark:text-gray-400">GHS{project.goal}</p>
                                     </div>
                                 </td>
                                 <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
@@ -363,7 +363,7 @@ const Manage = () => {
                                     {donationStats[project.id].totalAmountDonated} / {project.goal} ({((donationStats[project.id].totalAmountDonated / project.goal) * 100).toFixed(2)}%)
                                 </p>
                                 <p className="mt-1 text-xs text-red-500 dark:text-red-400">
-                                    ${project.goal - donationStats[project.id].totalAmountDonated} left to reach goal
+                                    GHS{project.goal - donationStats[project.id].totalAmountDonated} left to reach goal
                                 </p>
                             </div>
                         )}
@@ -702,7 +702,7 @@ const Manage = () => {
                                 <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                     <div>
                                         <h2 class="font-medium text-gray-800 dark:text-white ">{project.title.slice(0,6)}...</h2>
-                                        <p class="text-sm font-normal text-gray-600 dark:text-gray-400">${project.goal}</p>
+                                        <p class="text-sm font-normal text-gray-600 dark:text-gray-400">GHS{project.goal}</p>
                                     </div>
                                 </td>
                                 <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
