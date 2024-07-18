@@ -156,6 +156,7 @@ const VerifyAccount = () => {
         addedBy: userDetails.uid,
         addedByImage: userDetails.photoURL,
         displayName: userDetails.displayName,
+        campaign: userDetails.category,
         createdAt: new Date().toISOString()
       };
 
