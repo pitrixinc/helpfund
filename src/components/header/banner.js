@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
 
 const images = [
@@ -32,28 +33,28 @@ const Banner = () => {
       >
         <div className="max-w-xl text-center md:text-left lg:text-left xl:text-left  ltr:sm:text-left rtl:sm:text-right">
           <h1 className="text-3xl font-extrabold sm:text-5xl">
-            Let us find your
-            <strong className="block font-extrabold text-rose-700"> Forever Home. </strong>
+            Empower Your Vision,
+            <strong className="block font-extrabold text-rose-700"> Fund Your Dreams. </strong>
           </h1>
 
           <p className="mt-4 max-w-lg sm:text-xl/relaxed">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nesciunt illo tenetur fuga ducimus numquam ea!
+            Connect with supporters and turn your ideas into reality with our innovative crowdfunding platform.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4 text-center">
-            <a
-              href="#"
+            <Link
+              href="/creator-signup"
               className="block w-full rounded bg-rose-600 px-12 py-3 text-sm font-medium text-white shadow hover:bg-rose-700 focus:outline-none focus:ring active:bg-rose-500 sm:w-auto"
             >
               Get Started
-            </a>
+            </Link>
 
-            <a
-              href="#"
+            <Link
+              href="/projects"
               className="block w-full rounded bg-white px-12 py-3 text-sm font-medium text-rose-600 shadow hover:text-rose-700 focus:outline-none focus:ring active:text-rose-500 sm:w-auto"
             >
-              Learn More
-            </a>
+              Donate Now
+            </Link>
           </div>
         </div>
       </div>

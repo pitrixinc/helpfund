@@ -48,7 +48,7 @@ const AccountSignin = () => {
               } else {
                 returnUrl = '/';
               }
-              toast.warning("You are alredy signed in")
+              toast.warning("You are already signed in")
               router.push(returnUrl);
             }
           }

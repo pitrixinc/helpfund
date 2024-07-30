@@ -91,7 +91,6 @@ const VerifyAccount = () => {
   }, [userDetails]);
 
 
-
   // Video upload
   const addVideoToPost = (e) => {
     setErrorMessage('');
@@ -183,6 +182,7 @@ const VerifyAccount = () => {
     } catch (err) {
       setLoading(false);
       toast.error("Verification application not submitted! Error: " + err.message);
+      console.log("Verification application not submitted! Error: " + err.message);
     }
   };
 
@@ -190,7 +190,7 @@ const VerifyAccount = () => {
     <div className="md:max-w-4xl md:px-4 md:py-10 pb-10  lg:px-8 lg:py-14 mx-auto">
       {applicationSubmitted ? (
           // Display a message if the application has already been submitted
-          <p className="text-md md:text-2xl lg:text-2xl font-semibold mx-3 p-5 text-center bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-black">
+          <p className="text-md md:text-2xl lg:text-2xl font-semibold mx-3 p-5 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-black">
             Your Verification Application Has Been Submitted, 
             We Will Assess Your Info And Brief You On Your Verification Status Shortly.
           </p>

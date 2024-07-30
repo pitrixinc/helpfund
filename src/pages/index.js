@@ -31,8 +31,8 @@ export default function Home() {
       <Features/>
       <Testimonials/>
       <FAQ/>
-      <Blogs/>
-      <Clients/>
+    {/* <Blogs/>
+     <Clients/> */}
       <CTA/>
     </Layout>
   );

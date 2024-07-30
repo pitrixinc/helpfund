@@ -70,8 +70,8 @@ const FeaturedProjects = ({ filters, sortOption }) => {
     <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
 
 <div class="max-w-2xl mx-auto text-center mb-10 lg:mb-14">
-    <h2 class="text-2xl font-bold md:text-4xl md:leading-tight dark:text-white">Featured Projects</h2>
-    <p class="mt-1 text-gray-600 dark:text-neutral-400">Creative people</p>
+    <h2 class="text-2xl font-bold md:text-4xl md:leading-tight dark:text-white">Featured Campaigns</h2>
+    <p class="mt-1 text-gray-600 dark:text-neutral-400">Explore Trending Campaigns</p>
   </div>
      
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-1 md:gap-6 lg:gap-6 xl:gap-6 mb-20">
