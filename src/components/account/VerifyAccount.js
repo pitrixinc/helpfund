@@ -40,10 +40,16 @@ const VerifyAccount = () => {
             console.log('User Details:', userData);
 
             // Check user type and redirect accordingly
-            if (!userData.isCreator || !userData.isDonor && userData.isMiniAdmin) {
+            if (!userData.isCreator && userData.isMiniAdmin) {
               // User is not a creator or donor but is a mini admin, redirect to /dashboard
               router.push(`/dashboard/${id}/dashboard`);
-            } else if (!userData.isCustomer && userData.isSuperAdmin) {
+            } else if (!userData.isCreator  && userData.isSuperAdmin) {
+              // User is not a customer but is a super admin, redirect to /my-admin
+              router.push(`/my-admin/${id}/dashboard`);
+            } else if (!userData.isDonor && userData.isMiniAdmin) {
+              // User is not a customer but is a super admin, redirect to /my-admin
+              router.push(`/dashboard/${id}/dashboard`);
+            } else if (!userData.sDonor && userData.isSuperAdmin) {
               // User is not a customer but is a super admin, redirect to /my-admin
               router.push(`/my-admin/${id}/dashboard`);
             } else {
