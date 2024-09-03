@@ -158,7 +158,8 @@ const SignupCreator = () => {
         router.push('/');
       }
     } catch (error) {
-      toast.error(error.message);
+   //   toast.error(error.message);
+   console.log('error', error)
     }
   };
 

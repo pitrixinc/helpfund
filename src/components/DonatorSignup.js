@@ -99,6 +99,7 @@ const SignupDonor = () => {
       toast.error(error);
       setLoading(false);
       toast.error('Something went wrong');
+      console.log('An error occured when creating account', error)
     }
   };
   
@@ -133,7 +134,8 @@ const SignupDonor = () => {
         router.push('/');
       }
     } catch (error) {
-      toast.error(error.message);
+    //  toast.error(error.message);
+    console.log('error', error)
     }
   };
 
