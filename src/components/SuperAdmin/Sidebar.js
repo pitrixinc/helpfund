@@ -66,7 +66,7 @@ const Sidebar = () => {
 
   return (
     <>
-    <aside className='hidden sm:flex flex-col w-[20%] overflow-y-auto items-center xl:items-start xl:w-[340px] p-2 fixed h-full border-r border-gray-400 pr-0 xl:pr-8 no-scrollbar'>
+    <aside className='dark:bg-gray-900 dark:text-gray-300  hidden sm:flex flex-col w-[20%] overflow-y-auto items-center xl:items-start xl:w-[340px] p-2 fixed h-full border-r border-gray-400 pr-0 xl:pr-8 no-scrollbar'>
     <Link className=" text-rose-600 flex" href="#">
           <span className="sr-only">Home</span>
           <svg className="h-8" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -147,7 +147,7 @@ const Sidebar = () => {
 
                 <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Manage all campaigns and all user accounts with ease</p>
 
-                <img class="object-cover w-full h-32 mt-2 rounded-lg" src="https://images.unsplash.com/photo-1658953229664-e8d5ebd039ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&h=1374&q=80" alt=""/>
+                <img class="object-cover w-full h-32 mt-2 rounded-lg" src="https://th.bing.com/th/id/OIP.SeHvQglq3VkzeL89znVKegHaFO?rs=1&pid=ImgDetMain" alt=""/>
             </div>
 
             <div class="flex items-center justify-between mt-6">
@@ -166,7 +166,7 @@ const Sidebar = () => {
     </div>
 </aside>
 
-<div className='fixed bottom-0 left-0 z-10 w-full md:hidden lg:hidden bg-white border-t border-gray-400 p-4 flex justify-between'>
+<div className='dark:bg-gray-900 dark:text-gray-300 fixed bottom-0 left-0 z-10 w-full md:hidden lg:hidden bg-white border-t border-gray-400 p-4 flex justify-between'>
   <button onClick={() => router.push(`/my-admin/${id}/dashboard`)}>
     <div className='flex items-center justify-center'>
     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 " fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
@@ -200,7 +200,7 @@ const Sidebar = () => {
 
 {showLogoutModal && (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-        <div className="bg-white p-6 rounded-lg shadow-lg">
+        <div className="bg-white p-6 rounded-lg shadow-lg dark:bg-gray-500 dark:text-black">
             <h2 className="text-xl font-semibold mb-4">Confirm Logout</h2>
             <p className="mb-4">Are you sure you want to log out?</p>
             <div className="flex justify-end gap-4">
@@ -213,7 +213,7 @@ const Sidebar = () => {
 
 {showSettingModal && (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-        <div className="bg-white p-6 rounded-lg shadow-lg">
+        <div className="bg-white p-6 rounded-lg shadow-lg dark:bg-gray-500 dark:text-black">
             <h2 className="text-xl font-semibold mb-4">Settings</h2>
             <div onClick={() => router.push(`/my-admin/${id}/profile`)} class="cursor-pointer flex items-center px-1 py-3 mb-3 border border-b-black text-gray-600 transition-colors duration-300 transform rounded-sm dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">

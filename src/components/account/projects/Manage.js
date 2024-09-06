@@ -24,6 +24,7 @@ const Manage = () => {
     const projectsPerPage = 9;
     const [donationStats, setDonationStats] = useState({});
     const [userDetails, setUserDetails] = useState(null);
+    const [verificationStatus, setVerificationStatus] = useState(null);
 
 
     useEffect(() => {
@@ -32,21 +33,34 @@ const Manage = () => {
           try {
             const userDocRef = doc(db, 'users', id);
             const userDocSnapshot = await getDoc(userDocRef);
-    
+  
             if (userDocSnapshot.exists()) {
               const userData = userDocSnapshot.data();
               setUserDetails(userData);
               console.log('User Details:', userData);
-    
-             // Check user type and redirect accordingly
-              if (!userData.isCreator || !userData.isDonor && userData.isMiniAdmin) {
-                  // User is not a creator or donor but is a mini admin, redirect to /dashboard
-                  router.push(`/dashboard/${id}/dashboard`);
-              } else if (!userData.isCustomer && userData.isSuperAdmin) {
-                  // User is not a customer but is a super admin, redirect to /my-admin
-                  router.push(`/my-admin/${id}/dashboard`);
-              } else {
-                  // User is a customer or user type not recognized, continue rendering the page
+  
+              // Check user type and redirect accordingly
+              if (!userData.isCreator && userData.isMiniAdmin) {
+                router.push(`/dashboard/${id}/dashboard`);
+              } else if (!userData.isCreator && userData.isSuperAdmin) {
+                router.push(`/my-admin/${id}/dashboard`);
+              } else if (!userData.isDonor && userData.isMiniAdmin) {
+                router.push(`/dashboard/${id}/dashboard`);
+              } else if (!userData.isDonor && userData.isSuperAdmin) {
+                router.push(`/my-admin/${id}/dashboard`);
+              }
+  
+              // Fetch verification status
+              if (userData.isCreator || userData.isDonor) {
+                const verificationQuery = query(collection(db, 'applyVerification'), where('addedBy', '==', id));
+                const verificationSnapshot = await getDocs(verificationQuery);
+                
+                if (!verificationSnapshot.empty) {
+                  const verificationData = verificationSnapshot.docs[0].data();
+                  setVerificationStatus(verificationData.status);
+                } else {
+                  setVerificationStatus('Not Applied');
+                }
               }
             } else {
               console.log('User not found');
@@ -57,9 +71,9 @@ const Manage = () => {
           }
         }
       };
-    
+  
       console.log('UID:', id); // Log UID to check if it's defined
-    
+  
       fetchUserData();
     }, [id, router]);
 
@@ -206,8 +220,8 @@ const Manage = () => {
 
 
   return (
-    <section class="container px-4 mx-auto">
-      {userDetails?.isVerified ? (<>
+    <section class="container px-4 mx-auto dark:bg-gray-900 dark:text-gray-300">
+      {verificationStatus === 'Verified' ? (<>
     <div class="sm:flex sm:items-center sm:justify-between">
         <div>
             <div class="flex items-center gap-x-3">

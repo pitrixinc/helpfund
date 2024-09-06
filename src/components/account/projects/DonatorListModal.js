@@ -5,10 +5,10 @@ const DonatorListModal = ({ isOpen, onClose, donators }) => {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-gray-900 bg-opacity-50">
-            <div className="bg-white p-4 rounded-md shadow-lg w-96 max-h-70  overflow-y-auto no-scrollbar">
+            <div className="dark:bg-gray-700 dark:text-white bg-white p-4 rounded-md shadow-lg w-96 max-h-70  overflow-y-auto no-scrollbar">
                 <div className="flex justify-between items-center border-b pb-2 mb-4">
                     <h2 className="text-lg font-semibold">Project Donators</h2>
-                    <button onClick={onClose} className="text-gray-600 hover:text-gray-900">&times;</button>
+                    <button onClick={onClose} className="dark:text-white text-2xl text-gray-600 hover:text-gray-900">&times;</button>
                 </div>
                 <ul className="space-y-2">
                     {donators.length > 0 ?

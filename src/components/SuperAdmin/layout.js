@@ -8,7 +8,7 @@ export default function Layout({ children }) {
         <div className='w-[20%]'>
         <Sidebar />
         </div>
-      <main className="flex-1 md:p-4 lg:p-4 overflow-auto"
+      <main className="flex-1 md:p-4 lg:p-4 overflow-auto dark:bg-gray-900 dark:text-gray-300"
         sx={{
           variant: 'layout.main',
         }}

@@ -58,30 +58,30 @@ const DonationFavorite = () => {
   }
 
   return (
-    <section>
+    <section className='dark:bg-gray-900 dark:text-white'>
       <div className="mx-auto max-w-screen-2xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-800 md:text-3xl">Favorite Donations</h2>
-          <p className="text-gray-600 mt-4">Here are the projects you&apos;ve donated to multiple times.</p>
+          <h2 className="dark:text-white text-2xl font-bold text-gray-800 md:text-3xl">Favorite Donations</h2>
+          <p className="dark:text-white text-gray-600 mt-4">Here are the projects you&apos;ve donated to multiple times.</p>
         </div>
       </div>
       
       <div className="container mx-auto p-4">
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <div>
+        <div className="dark:bg-gray-900 dark:text-gray-300 bg-white p-6 rounded-lg shadow-md">
+          <div className=''>
             <h3 className="text-xl font-bold mb-4">Projects</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {favoriteProjects.length > 0 ? (
                 favoriteProjects.map((project) => (
-                  <div key={project.id} className="bg-white p-4 rounded-lg shadow-md">
+                  <div key={project.id} className="dark:bg-gray-900 dark:text-gray-300 bg-white p-4 rounded-lg shadow-md">
                     <div class="h-38 flex flex-col justify-center items-center bg-[url('https://preline.co/assets/svg/examples/abstract-bg-1.svg')] bg-no-repeat bg-cover bg-center rounded-t-xl">
                         <img src={project.image} alt="project image" className='w-full h-38 rounded-md' />
                     </div>
-                    <h4 className="text-lg font-semibold mb-2">{truncateString(project.title, 15)}</h4>
-                    <p className="text-gray-600 mb-2">{truncateString(project.category, 15)}</p>
-                    <p className="text-gray-800 font-semibold">Goal: ${project.goal}</p>
-                    <p className="text-gray-800 font-semibold">Status: {project.status}</p>
-                    <p className="text-gray-600">{project.deadline} left</p>
+                    <h4 className="dark:text-white text-lg font-semibold mb-2">{truncateString(project.title, 15)}</h4>
+                    <p className="dark:text-white text-gray-600 mb-2">{truncateString(project.category, 15)}</p>
+                    <p className="dark:text-white text-gray-800 font-semibold">Goal: ${project.goal}</p>
+                    <p className="dark:text-white text-gray-800 font-semibold">Status: {project.status}</p>
+                    <p className="dark:text-white text-gray-600">{project.deadline} left</p>
                   </div>
                 ))
               ) : (

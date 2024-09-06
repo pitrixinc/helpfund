@@ -49,7 +49,7 @@ const RejectedAccount = () => {
 
     return (
         <div className="md:max-w-4xl md:px-4 md:py-10 pb-10  lg:px-8 lg:py-14 mx-auto">
-            <p className="text-md md:text-2xl lg:text-2xl font-semibold mx-3 p-5 text-center bg-clip-text text-transparent bg-gradient-to-r from-red-600 to-black">
+            <p className="dark:text-gray-300 text-md md:text-2xl lg:text-2xl font-semibold mx-3 p-5 text-center bg-clip-text text-transparent bg-gradient-to-r from-red-600 to-black">
                 We noticed an unusual activity in your account, We have temporarily suspended your account till further notice, If you believe this is a mistake, please contact us for account reinstatement.
           </p>
         </div>

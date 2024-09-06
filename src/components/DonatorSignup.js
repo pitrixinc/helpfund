@@ -19,7 +19,6 @@ const SignupDonor = () => {
   const [occupation, setOccupation] = useState('');
   const [address, setAddress] = useState('');
   const [referralCode, setReferralCode] = useState('');
-  const [currency, setCurrency] = useState('');
   const [loading, setLoading] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedImage, setSelectedImage] = useState(null); // New state for the selected image
@@ -67,7 +66,6 @@ const SignupDonor = () => {
         photoURL: imageUrl,
         address: address,
         phoneNumber: phoneNumber,
-        currency: currency,
         occupation: occupation,
       });
   
@@ -80,7 +78,6 @@ const SignupDonor = () => {
         photoURL: imageUrl,
         address: address,
         phoneNumber: phoneNumber,
-        currency: currency,
         occupation: occupation,
         isSuperAdmin: false,
         isMiniAdmin: false,
@@ -391,28 +388,6 @@ const SignupDonor = () => {
               outline: 'none',
             }}
           />
-          <select style={{
-              width: '100%',
-              margin: '10px 0',
-              padding: '15px',
-              fontSize: '16px',
-              border: 'none',
-              borderBottom: '1px solid #ccc',
-              background: 'transparent',
-              outline: 'none',
-            }}
-            value={currency} 
-            onChange={e=> setCurrency(e.target.value)}
-            required>
-            <option disabled>Select Currency</option>
-            <option value="$">$</option>
-            <option value="€">€</option>
-            <option value="₹">₹</option>
-            <option value="¥">¥</option>
-            <option value="₵">₵</option>
-            <option value="£">£</option>
-            <option value="₦">₦</option>
-          </select>
           
            {/* Image Upload */}
            <div style={{marginBottom: '30px'}}>

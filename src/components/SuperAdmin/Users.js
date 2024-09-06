@@ -55,21 +55,37 @@ const Users = () => {
 
     if (selectedTab === 'Creators Who Applied For Verification') {
       filtered = filtered.filter(user =>
-        verificationRequests.some(request => request.addedBy === user.uid)
+        verificationRequests.some(request => user.isCreator && request.addedBy === user.uid)
+      );
+    } else if (selectedTab === 'Donators Who Applied For Verification') {
+      filtered = filtered.filter(user =>
+        verificationRequests.some(request => user.isDonor && request.addedBy === user.uid)
       );
     } else if (selectedTab === 'Pending Creators') {
       filtered = filtered.filter(user =>
-        verificationRequests.some(request => request.addedBy === user.uid && request.status === 'Pending')
+        verificationRequests.some(request => user.isCreator && request.addedBy === user.uid && request.status === 'Pending')
       );
     } else if (selectedTab === 'Verified Creators') {
       filtered = filtered.filter(user =>
-        verificationRequests.some(request => request.addedBy === user.uid && request.status === 'Verified')
+        verificationRequests.some(request => user.isCreator && request.addedBy === user.uid && request.status === 'Verified')
       );
     } else if (selectedTab === 'Rejected Creators') {
       filtered = filtered.filter(user =>
-        verificationRequests.some(request => request.addedBy === user.uid && request.status === 'Rejected')
+        verificationRequests.some(request => user.isCreator && request.addedBy === user.uid && request.status === 'Rejected')
       );
-    } else if (selectedTab === 'Creators') {
+    } else if (selectedTab === 'Pending Donators') {
+      filtered = filtered.filter(user =>
+        verificationRequests.some(request => user.isDonor && request.addedBy === user.uid && request.status === 'Pending')
+      );
+    } else if (selectedTab === 'Verified Donators') {
+      filtered = filtered.filter(user =>
+        verificationRequests.some(request => user.isDonor && request.addedBy === user.uid && request.status === 'Verified')
+      );
+    } else if (selectedTab === 'Rejected Donators') {
+      filtered = filtered.filter(user =>
+        verificationRequests.some(request => user.isDonor && request.addedBy === user.uid && request.status === 'Rejected')
+      );
+    }else if (selectedTab === 'Creators') {
       filtered = filtered.filter(user => user.isCreator);
     } else if (selectedTab === 'Donators') {
       filtered = filtered.filter(user => user.isDonor);
@@ -79,19 +95,17 @@ const Users = () => {
   };
 
   const handleEdit = (user) => {
-    if (user.isCreator) {
-      const request = verificationRequests.find(request => request.addedBy === user.uid);
-      if (request) {
-        setSelectedRequest(request);
-      } else {
-        setSelectedRequest(null);
-      }
-    } else {
-      setSelectedRequest(null);
+    let request = null;
+    
+    if (user.isCreator || user.isDonor) {
+        request = verificationRequests.find(request => request.addedBy === user.uid);
     }
+
+    setSelectedRequest(request || null);  // This sets the request if found, or null if not.
     setSelectedUser(user);
     setIsEditModalOpen(true);
-  };
+};
+
 
   const handleDelete = (user) => {
     setSelectedUser(user);
@@ -155,13 +169,13 @@ const Users = () => {
   };
 
   return (
-    <section className="container px-4 mx-auto">
+    <section className="container px-4 mx-auto dark:bg-gray-900 dark:text-gray-300">
       <div className="flex items-center gap-x-3">
         <h2 className="text-lg font-medium text-gray-800 dark:text-white">All Users</h2>
         <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400 whitespace-nowrap">{users.length} users</span>
       </div>
-      <div className="flex mt-6 gap-x-4 w-full overflow-x-auto">
-        {['All Users', 'Creators', 'Donators', 'Creators Who Applied For Verification', 'Pending Creators', 'Verified Creators', 'Rejected Creators'].map(tab => (
+      <div className="flex mt-6 gap-x-4 w-full overflow-x-auto no-scrollbar">
+        {['All Users', 'Creators', 'Donators', 'Creators Who Applied For Verification', 'Donators Who Applied For Verification', 'Pending Creators', 'Pending Donators','Verified Creators', 'Verified Donators', 'Rejected Creators', 'Rejected Donators'].map(tab => (
           <button
             key={tab}
             className={`px-3 py-1.5 whitespace-nowrap ${selectedTab === tab ? 'text-blue-600 bg-blue-100' : 'text-gray-600 bg-gray-100'} rounded-full`}

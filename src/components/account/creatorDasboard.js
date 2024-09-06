@@ -40,7 +40,7 @@ const Dashboard = () => {
             }
 
             // Fetch verification status
-            if (userData.isCreator) {
+            if (userData.isCreator || userData.isDonor) {
               const verificationQuery = query(collection(db, 'applyVerification'), where('addedBy', '==', id));
               const verificationSnapshot = await getDocs(verificationQuery);
               
@@ -127,7 +127,7 @@ const Dashboard = () => {
   }
 
   return (
-    <section>
+    <section className='dark:bg-gray-900 dark:text-gray-300'>
       {verificationStatus === 'Verified' ? (
         <>
           <div className="mx-auto max-w-screen-2xl px-4 py-8 sm:px-6 lg:px-8">
@@ -175,7 +175,7 @@ const Dashboard = () => {
           </div>
 
           <div className="container mx-auto p-4">
-            <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="bg-white p-6 rounded-lg shadow-md dark:bg-gray-900 dark:text-gray-300">
               <div>
                 <h3 className="text-xl font-bold mb-4">
                   {userDetails?.isCreator ? 'Projects Summary' : 'Donations Summary'}
@@ -183,27 +183,27 @@ const Dashboard = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                   {userDetails?.isCreator ? (
                     projects.map((project) => (
-                      <div key={project.id} className="bg-white p-4 rounded-lg shadow-md cursor-pointer">
+                      <div key={project.id} className="bg-white p-4 rounded-lg shadow-md cursor-pointer dark:bg-gray-700 dark:text-white">
                         <div class="h-38 flex flex-col justify-center items-center bg-[url('https://preline.co/assets/svg/examples/abstract-bg-1.svg')] bg-no-repeat bg-cover bg-center rounded-t-xl">
                           <img src={project.image} alt="project image" className='w-full h-38 rounded-md' />
                         </div>
                         <h4 className="text-lg font-semibold mb-2">{truncateString(project.title, 15)}</h4>
-                        <p className="text-gray-600 mb-2">{truncateString(project.category, 15)}</p>
-                        <p className="text-gray-800 font-semibold">Goal: {userDetails?.currency} {project.goal}</p>
-                        <p className="text-gray-800 font-semibold">Donations: ${project.totalDonations.toFixed(2)}</p>
-                        <p className="text-gray-600">{project.deadline} left</p>
-                        <p className={`mt-2 ${project.status === 'Approved' ? 'text-green-600' : project.status === 'Pending' ? 'text-yellow-600' : 'text-rose-600'}`}>{project.status}</p>
+                        <p className=" dark:text-white text-gray-600 mb-2">{truncateString(project.category, 15)}</p>
+                        <p className=" dark:text-white text-gray-800 font-semibold">Goal: {userDetails?.currency} {project.goal}</p>
+                        <p className=" dark:text-white text-gray-800 font-semibold">Donations: ${project.totalDonations.toFixed(2)}</p>
+                        <p className=" dark:text-white text-gray-600">{project.deadline} left</p>
+                        <p className={`mt-2 ${project.status === 'Approved' ? ' dark:text-white text-green-600' : project.status === 'Pending' ? 'text-yellow-600  dark:text-white' : 'text-rose-600  dark:text-white'}`}>{project.status}</p>
                       </div>
                     ))
                   ) : (
                     donations.map((donation, index) => (
-                      <div key={index} className="bg-white p-4 rounded-lg shadow-md cursor-pointer">
+                      <div key={index} className="bg-white p-4 rounded-lg shadow-md cursor-pointer dark:bg-gray-700 dark:text-white">
                         <div class="h-38 flex flex-col justify-center items-center bg-[url('https://preline.co/assets/svg/examples/abstract-bg-1.svg')] bg-no-repeat bg-cover bg-center rounded-t-xl">
                           <img src={donation.projectImage} alt="project image" className='w-full h-38 rounded-md' />
                         </div>
-                        <h4 className="text-lg font-semibold mb-2">Project: {donation.projectTitle}</h4>
-                        <p className="text-gray-800 font-semibold">Amount: {userDetails?.currency}{donation.amount.toFixed(2)}</p>
-                        <p className="text-gray-600">Donated on: {new Date(donation.timestamp).toLocaleDateString()}</p>
+                        <h4 className="dark:text-white text-black text-lg font-semibold mb-2">Project: {donation.projectTitle}</h4>
+                        <p className="dark:text-white text-gray-800 font-semibold">Amount: {userDetails?.currency}{donation.amount.toFixed(2)}</p>
+                        <p className="dark:text-white text-gray-600">Donated on: {new Date(donation.timestamp).toLocaleDateString()}</p>
                       </div>
                     ))
                   )}

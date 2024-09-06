@@ -2,7 +2,7 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { ref, uploadBytesResumable, getDownloadURL, uploadString  } from 'firebase/storage';
-import { collection, addDoc, getDoc, doc, updateDoc } from 'firebase/firestore';
+import { collection, addDoc, getDoc, doc, updateDoc, query, where, getDocs } from 'firebase/firestore';
 import {db,storage} from '../../../firebase.config';
 import { AiOutlineArrowLeft, AiOutlineVideoCameraAdd, AiOutlineClose } from 'react-icons/ai';
 import { toast } from 'react-toastify';
@@ -32,6 +32,60 @@ const Create = () => {
     const [activeTab, setActiveTab] = useState('image'); // default tab is 'image'
     const [errorMessage, setErrorMessage] = useState('');
     const [loading, setLoading] = useState(false);
+    const [verificationStatus, setVerificationStatus] = useState(null);
+
+
+    useEffect(() => {
+      const fetchUserData = async () => {
+        if (id) {
+          try {
+            const userDocRef = doc(db, 'users', id);
+            const userDocSnapshot = await getDoc(userDocRef);
+  
+            if (userDocSnapshot.exists()) {
+              const userData = userDocSnapshot.data();
+              setUserDetails(userData);
+              console.log('User Details:', userData);
+  
+              // Check user type and redirect accordingly
+              if (!userData.isCreator && userData.isMiniAdmin) {
+                router.push(`/dashboard/${id}/dashboard`);
+              } else if (!userData.isCreator && userData.isSuperAdmin) {
+                router.push(`/my-admin/${id}/dashboard`);
+              } else if (!userData.isDonor && userData.isMiniAdmin) {
+                router.push(`/dashboard/${id}/dashboard`);
+              } else if (!userData.isDonor && userData.isSuperAdmin) {
+                router.push(`/my-admin/${id}/dashboard`);
+              }
+  
+              // Fetch verification status
+              if (userData.isCreator || userData.isDonor) {
+                const verificationQuery = query(collection(db, 'applyVerification'), where('addedBy', '==', id));
+                const verificationSnapshot = await getDocs(verificationQuery);
+                
+                if (!verificationSnapshot.empty) {
+                  const verificationData = verificationSnapshot.docs[0].data();
+                  setVerificationStatus(verificationData.status);
+                } else {
+                  setVerificationStatus('Not Applied');
+                }
+              }
+            } else {
+              console.log('User not found');
+              router.push('/signin');
+            }
+          } catch (error) {
+            console.error('Error fetching user data', error);
+          }
+        }
+      };
+  
+      console.log('UID:', id); // Log UID to check if it's defined
+  
+      fetchUserData();
+    }, [id, router]);
+
+
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -180,8 +234,8 @@ const Create = () => {
       };
       
   return (
-<div class="max-w-4xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
-{userDetails?.isVerified ? (<>
+<div class="dark:bg-gray-900 dark:text-gray-300 max-w-4xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
+{verificationStatus === 'Verified' ? (<>
   <form onSubmit={addProject}>
     <div class="bg-white rounded-xl shadow dark:bg-neutral-900">
       <div class="relative h-40 rounded-t-xl bg-[url('https://preline.co/assets/svg/examples/abstract-bg-1.svg')] bg-no-repeat bg-cover bg-center">

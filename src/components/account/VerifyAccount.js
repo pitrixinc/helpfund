@@ -152,7 +152,7 @@ const VerifyAccount = () => {
         addedBy: userDetails.uid,
         addedByImage: userDetails.photoURL,
         displayName: userDetails.displayName,
-        campaign: userDetails.category,
+        campaign: userDetails.category || '',
         createdAt: new Date().toISOString()
       });
 
@@ -161,7 +161,7 @@ const VerifyAccount = () => {
         addedBy: userDetails.uid,
         addedByImage: userDetails.photoURL,
         displayName: userDetails.displayName,
-        campaign: userDetails.category,
+        campaign: userDetails.category || '',
         createdAt: new Date().toISOString()
       };
 
@@ -193,10 +193,10 @@ const VerifyAccount = () => {
   };
 
   return (
-    <div className="md:max-w-4xl md:px-4 md:py-10 pb-10  lg:px-8 lg:py-14 mx-auto">
+    <div className="dark:bg-gray-900 dark:text-gray-300 md:max-w-4xl md:px-4 md:py-10 pb-10  lg:px-8 lg:py-14 mx-auto">
       {applicationSubmitted ? (
           // Display a message if the application has already been submitted
-          <p className="text-md md:text-2xl lg:text-2xl font-semibold mx-3 p-5 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-black">
+          <p className="dark:text-gray-300 text-md md:text-2xl lg:text-2xl font-semibold mx-3 p-5 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-black">
             Your Verification Application Has Been Submitted, 
             We Will Assess Your Info And Brief You On Your Verification Status Shortly.
           </p>

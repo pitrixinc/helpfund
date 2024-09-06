@@ -50,7 +50,7 @@ const ProjectModal = ({ project, isOpen, closeModal }) => {
 
   return (
     <div className={`fixed top-0 left-0 z-20 h-screen w-screen bg-[#242d34bb] overflow-y-auto shadow-md`} onClick={closeModal}>
-      <div className='bg-white w-[350px] md:w-[650px] text-black absolute left-[50%] translate-x-[-50%] mt-[40px] p-4 rounded-[20px] overflow-y-auto no-scrollbar h-[380px] md:h-[450px]' onClick={(e) => e.stopPropagation()}>
+      <div className='dark:bg-gray-700 dark:text-white bg-white w-[350px] md:w-[650px] text-black absolute left-[50%] translate-x-[-50%] mt-[40px] p-4 rounded-[20px] overflow-y-auto no-scrollbar h-[380px] md:h-[450px]' onClick={(e) => e.stopPropagation()}>
         <div className='flex justify-between items-center mb-4'>
           <div className='text-xl font-bold'>Update Project</div>
           <MdClose className='text-[22px] cursor-pointer' onClick={closeModal} />
